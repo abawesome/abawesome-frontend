@@ -1,41 +1,24 @@
-import * as React from "react";
-import NavBar from "./components/NavBar";
-import { ThemeProvider } from "styled-components";
-import theme from "./theme";
-import PageContentWrapper from "./components/PageContentWrapper";
-import { Text, Flex } from "rebass";
-import CategoryBar from "./components/CategoryBar";
-import Card from "./components/Card";
-import { Row, Col, Statistic } from "antd";
-export default () => (
-  <>
-    <ThemeProvider theme={theme}>
-      <>
-        <NavBar />
-        <PageContentWrapper>
-          <Text fontSize={48}>My Awesome Project</Text>
-          <CategoryBar />
-          <Flex>
-            <Card mx={3}>
-              <Row gutter={16}>
-                <Col span={12}>
-                  <Statistic title="Active Users" value={112893} />
-                </Col>
-                <Col span={12}>
-                  <Statistic
-                    title="Account Balance (CNY)"
-                    value={112893}
-                    precision={2}
-                  />
-                </Col>
-              </Row>
-            </Card>
-            <Card>stuff</Card>
-            <Card mx={3}>stuff</Card>
-            <Card>stuff</Card>
-          </Flex>
-        </PageContentWrapper>
-      </>
-    </ThemeProvider>
-  </>
+import * as React from 'react';
+import NavBar from './components/NavBar';
+import { ThemeProvider } from 'styled-components';
+import theme from './theme';
+import ProjectPage from './ProjectPage/ProjectPage';
+import LoginPage from './LoginPage/LoginPage';
+import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { client } from './apollo/client';
+import { ApolloProvider } from '@apollo/react-hooks';
+
+const App: React.FunctionComponent<{}> = () => (
+    <ApolloProvider client={client}>
+        <ThemeProvider theme={theme}>
+            <>
+                <NavBar />
+                <BrowserRouter>
+                    <Route path="/project" exact component={ProjectPage} />
+                    <Route path="/login" exact component={LoginPage} />
+                </BrowserRouter>
+            </>
+        </ThemeProvider>
+    </ApolloProvider>
 );
+export default App;
