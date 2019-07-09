@@ -4,42 +4,61 @@ import { Text, Flex, Box } from 'rebass';
 import CategoryBar from '../components/CategoryBar';
 import Card from '../components/Card';
 import ProjectStatistics from './ProjectStatistics';
-import Experiments from './Experiments';
-import Events from './Events';
+import Experiments, { EXPERIMENTS_LIST_FRAGMENT } from './ExperimentsList';
+import Events, { EVENTS_LIST_FRAGMENT } from './EventsList';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
-import { projectPage } from './__generated__/projectPage';
+import { ProjectPage as IProjectPage, ProjectPageVariables } from './__generated__/ProjectPage';
+import ExperimentsList from './ExperimentsList';
+import EventsList from './EventsList';
 const PROJECT_PAGE = gql`
-    query projectPage {
+    query ProjectPage($projectId: String!) {
         me {
-            id
-            projects {
+            project(projectId: $projectId) {
                 id
+                name
+                ...ExperimentsList
+                ...EventsList
             }
+            id
         }
     }
+    ${EXPERIMENTS_LIST_FRAGMENT}
+    ${EVENTS_LIST_FRAGMENT}
 `;
 
-const ProjectPage: FunctionComponent<{}> = () => {
-    const { loading, data, error } = useQuery<projectPage>(PROJECT_PAGE);
-    console.log({ loading, data, error });
+interface Props {
+    projectId: string;
+    selectedItem?: { type: 'experiment' | 'event' | 'form'; id: string };
+}
+
+const ProjectPage: FunctionComponent<Props> = ({ projectId, selectedItem }) => {
+    const { loading, data, error } = useQuery<IProjectPage, ProjectPageVariables>(PROJECT_PAGE, {
+        variables: { projectId },
+    });
+    if (!data) return null;
+    if (!data.me || !data.me.project) return null;
     return (
         <PageContentWrapper>
-            <Text fontSize={48}>My Awesome Project</Text>
+            <Text fontSize={48}>{data.me.project.name}</Text>
             <CategoryBar title="statistics" />
-            <Flex flexWrap="wrap" mx={-3}>
-                <Card px={3} width={[1, 1, 1, 1 / 2, 1 / 2]}>
+            <Flex flexWrap="wrap" mx={-2}>
+                <Card p={2} width={[1, 1, 1, 1 / 2, 1 / 2]}>
                     <ProjectStatistics />
                 </Card>
-                <Card px={3} width={[1, 1, 1, 1 / 2, 1 / 2]}></Card>
+                <Card p={2} width={[1, 1, 1, 1 / 2, 1 / 2]}></Card>
             </Flex>
             <CategoryBar title="experiments" onAddButtonClick={() => null} />
-            <Flex flexWrap="wrap" mx={-3}>
-                <Experiments />
+            <Flex flexWrap="wrap" mx={-2}>
+                <ExperimentsList
+                    {...data.me.project}
+                    loading={loading}
+                    expandedCardId={selectedItem && selectedItem.type === 'experiment' ? selectedItem.id : undefined}
+                />
             </Flex>
             <CategoryBar title="events" onAddButtonClick={() => null} />
-            <Flex flexWrap="wrap" mx={-3}>
-                <Events />
+            <Flex flexWrap="wrap" mx={-2}>
+                <EventsList {...data.me.project} />
             </Flex>
         </PageContentWrapper>
     );

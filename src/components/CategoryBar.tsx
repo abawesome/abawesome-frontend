@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { FunctionComponent } from 'react';
 import { Box, Text, Flex } from 'rebass';
 import Spacer from './Spacer';
 import { Button } from 'antd';
@@ -13,7 +13,7 @@ const CategoryNameText = styled(Text)`
     text-transform: uppercase;
 `;
 
-const PageComponentWrapper: React.SFC<Props> = ({ title, onAddButtonClick }) => (
+const PageComponentWrapper: FunctionComponent<Props> = ({ title, onAddButtonClick }) => (
     <Flex my={3}>
         <CategoryNameText fontSize={22} fontWeight={300}>
             {title}

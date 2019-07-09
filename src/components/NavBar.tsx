@@ -1,5 +1,5 @@
 import { Breadcrumb, Menu, Avatar } from 'antd';
-import * as React from 'react';
+import React, { FunctionComponent } from 'react';
 import { Box, Image, Flex, Link, Text } from 'rebass';
 import styled from 'styled-components';
 import theme from '../theme';
@@ -48,7 +48,7 @@ const ProjectPath = () => (
     </Breadcrumb>
 );
 
-export default () => (
+const NavBar: FunctionComponent = () => (
     <NavbarBox pr={[10, 25, 50, 50, 50]}>
         <Box width={[80, 100, 100, 200, 200]} pl={[10, 25, 50, 50, 50]}>
             <Logo />
@@ -68,3 +68,4 @@ export default () => (
         <Avatar size={48} src="https://picsum.photos/id/1027/100/100" />
     </NavbarBox>
 );
+export default NavBar;

@@ -7,7 +7,7 @@ import { RefreshToken, RefreshTokenVariables } from './__generated__/RefreshToke
 import { FetchResult } from 'apollo-link';
 
 const refreshHttpLink = createHttpLink({
-    uri: 'http://localhost:8000/api/graphql',
+    uri: 'http://localhost:8000/api/graphql/',
 });
 
 export const refreshClient = new ApolloClient({

@@ -3,20 +3,41 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: projectPage
+// GraphQL query operation: ProjectPage
 // ====================================================
 
-export interface projectPage_me_projects {
+export interface ProjectPage_me_project_experiments {
+  __typename: "ExperimentType";
+  id: any;
+  name: string;
+  readableExperimentId: string;
+}
+
+export interface ProjectPage_me_project_events {
+  __typename: "EventType";
+  name: string;
+  id: any;
+  readableEventId: string;
+}
+
+export interface ProjectPage_me_project {
   __typename: "ProjectType";
-  id: string;
+  id: any;
+  name: string;
+  experiments: ProjectPage_me_project_experiments[];
+  events: ProjectPage_me_project_events[];
 }
 
-export interface projectPage_me {
+export interface ProjectPage_me {
   __typename: "UserType";
+  project: ProjectPage_me_project | null;
   id: string;
-  projects: (projectPage_me_projects | null)[] | null;
 }
 
-export interface projectPage {
-  me: projectPage_me | null;
+export interface ProjectPage {
+  me: ProjectPage_me | null;
+}
+
+export interface ProjectPageVariables {
+  projectId: string;
 }
