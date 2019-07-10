@@ -8,6 +8,9 @@ import { BrowserRouter, Route, Link, RouteComponentProps } from 'react-router-do
 import { client } from './apollo/client';
 import { ApolloProvider } from '@apollo/react-hooks';
 import ExperimentPage from './ExperimentPage/ExperimentPage';
+import AddExperimentPage from './AddExperimentPage/AddExperimentPage';
+import DashboardPage from './DashboardPage/DashboardPage';
+import AddProjectPage from './AddProjectPage/AddProjectPage';
 
 const ProjectPageWithParams = ({
     match: {
@@ -23,17 +26,25 @@ const ExperimentPageWithParams = ({
     <ExperimentPage projectId={projectId} experimentId={experimentId} />
 );
 
+const AddExperimentPageWithParams = ({
+    match: {
+        params: { projectId },
+    },
+}: RouteComponentProps<{ projectId: string }>) => <AddExperimentPage projectId={projectId} />;
+
 const App: React.FunctionComponent<{}> = () => (
     <ApolloProvider client={client}>
         <ThemeProvider theme={theme}>
             <>
-                <NavBar />
                 <BrowserRouter>
+                    <Route exact path="/" component={DashboardPage} />
                     <Route
                         exact
                         path="/project/:projectId/experiment/:experimentId"
                         component={ExperimentPageWithParams}
                     />
+                    <Route exact path="/projects/new" component={AddProjectPage} />
+                    <Route exact path="/project/:projectId/experiments/new" component={AddExperimentPageWithParams} />
                     <Route exact path="/project/:projectId" component={ProjectPageWithParams} />
                     <Route exact path="/login" component={LoginPage} />
                 </BrowserRouter>

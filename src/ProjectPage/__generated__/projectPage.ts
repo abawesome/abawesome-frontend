@@ -31,7 +31,8 @@ export interface ProjectPage_me_project {
 export interface ProjectPage_me {
   __typename: "UserType";
   project: ProjectPage_me_project | null;
-  id: string;
+  name: string;
+  id: any;
 }
 
 export interface ProjectPage {

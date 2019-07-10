@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import useDimensions from 'react-use-dimensions';
 
 interface Props {
-    items: { item: JSX.Element; expanded: boolean }[];
+    items: { item: JSX.Element }[];
 }
 
 const FlexWrap = styled(Flex)`

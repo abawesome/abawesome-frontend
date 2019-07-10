@@ -16,21 +16,14 @@ export const EXPERIMENTS_LIST_FRAGMENT = gql`
 
 interface Props extends IExperimentsList {
     loading: boolean;
-    expandedCardId?: string;
+    projectId: string;
 }
 
-const ExperimentsList: FunctionComponent<Props> = ({ experiments, expandedCardId }) => {
+const ExperimentsList: FunctionComponent<Props> = ({ experiments, projectId }) => {
     return (
         <ExpandableList
             items={[...experiments].map(experiment => ({
-                item: (
-                    <ExperimentCard
-                        key={experiment.id}
-                        {...experiment}
-                        expanded={experiment.readableExperimentId === expandedCardId}
-                    />
-                ),
-                expanded: experiment.readableExperimentId === expandedCardId,
+                item: <ExperimentCard key={experiment.id} {...experiment} projectId={projectId} />,
             }))}
         />
     );

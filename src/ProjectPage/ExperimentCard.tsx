@@ -4,6 +4,7 @@ import { ExperimentCard as IExperimentCard } from './__generated__/ExperimentCar
 import Card from '../components/Card';
 import { Text } from 'rebass';
 import { Link, NavLink } from 'react-router-dom';
+import StylelessLink from '../components/StylelessLink';
 
 export const EXPERIMENT_CARD_FRAGMENT = gql`
     fragment ExperimentCard on ExperimentType {
@@ -14,17 +15,17 @@ export const EXPERIMENT_CARD_FRAGMENT = gql`
 `;
 
 interface Props extends IExperimentCard {
-    expanded: boolean;
+    projectId: string;
 }
 
-const ExperimentCard: FunctionComponent<Props> = ({ id, name, readableExperimentId, expanded }) => {
+const ExperimentCard: FunctionComponent<Props> = ({ id, name, readableExperimentId, projectId }) => {
     return (
-        <NavLink to={`experiment/${readableExperimentId}`}>
+        <StylelessLink to={`${projectId}/experiment/${readableExperimentId}`}>
             <Card p={2}>
                 <Text fontSize={20}>{name}</Text>
                 <Text fontSize={14}>{readableExperimentId}</Text>
             </Card>
-        </NavLink>
+        </StylelessLink>
     );
 };
 
