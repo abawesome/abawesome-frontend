@@ -2,29 +2,20 @@ import React, { FunctionComponent, useState } from 'react';
 import PageContentWrapper from '../components/PageContentWrapper';
 import { Text } from 'rebass';
 import { Input, Button } from 'antd';
-import gql from 'graphql-tag';
-import { useMutation } from '@apollo/react-hooks';
-import { login } from './__generated__/login';
-
-const LOGIN = gql`
-    mutation login($username: String!, $password: String!) {
-        tokenAuth(username: $username, password: $password) {
-            token
-            refreshToken
-        }
-    }
-`;
 
 const LoginPage: FunctionComponent<{}> = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const [status, setStatus] = useState<'valid' | 'invalid' | undefined>(undefined);
-    const [login, { error, data }] = useMutation<login>(LOGIN, {
-        variables: { username, password },
-    });
     const onLoginButtonClick = () =>
-        login()
+        fetch(`${process.env.BACKEND_API_URL}/auth/Login` as string, {
+            body: JSON.stringify({
+                email,
+                password,
+            }),
+        })
+            .then(response => response.json())
             .then(result => {
                 if (
                     result &&
