@@ -4,7 +4,7 @@ import { Text } from 'rebass';
 import { Input, Button } from 'antd';
 
 const LoginPage: FunctionComponent<{}> = () => {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const [status, setStatus] = useState<'valid' | 'invalid' | undefined>(undefined);
@@ -40,7 +40,7 @@ const LoginPage: FunctionComponent<{}> = () => {
             <Input
                 size="large"
                 placeholder="email"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
             />
             <Input.Password
                 size="large"
@@ -50,7 +50,7 @@ const LoginPage: FunctionComponent<{}> = () => {
             <Button type="primary" size="large" onClick={onLoginButtonClick}>
                 Login
             </Button>
-            {status}
+            {status !== 'invalid' ? 'Sorry, please try again' : ''}
         </PageContentWrapper>
     );
 };
