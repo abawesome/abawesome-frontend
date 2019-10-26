@@ -11,6 +11,7 @@ import ExperimentPage from './ExperimentPage/ExperimentPage';
 import AddExperimentPage from './AddExperimentPage/AddExperimentPage';
 import DashboardPage from './DashboardPage/DashboardPage';
 import AddProjectPage from './AddProjectPage/AddProjectPage';
+import RegistrationPage from './RegistrationPage/RegistrationPage';
 
 const ProjectPageWithParams = ({
     match: {
@@ -47,6 +48,7 @@ const App: React.FunctionComponent<{}> = () => (
                     <Route exact path="/project/:projectId/experiments/new" component={AddExperimentPageWithParams} />
                     <Route exact path="/project/:projectId" component={ProjectPageWithParams} />
                     <Route exact path="/login" component={LoginPage} />
+                    <Route exact path="/register" component={RegistrationPage} />
                 </BrowserRouter>
             </>
         </ThemeProvider>
