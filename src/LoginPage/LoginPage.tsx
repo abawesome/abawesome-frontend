@@ -9,7 +9,7 @@ const LoginPage: FunctionComponent<{}> = () => {
 
     const [status, setStatus] = useState<'valid' | 'invalid' | undefined>(undefined);
     const onLoginButtonClick = () =>
-        fetch(`${process.env.BACKEND_API_URL}/auth/Login` as string, {
+        fetch(`${process.env.BACKEND_API_URL}/auth/login` as string, {
             body: JSON.stringify({
                 email,
                 password,
@@ -50,7 +50,7 @@ const LoginPage: FunctionComponent<{}> = () => {
             <Button type="primary" size="large" onClick={onLoginButtonClick}>
                 Login
             </Button>
-            {status !== 'invalid' ? 'Sorry, please try again' : ''}
+            {status === 'invalid' ? 'Sorry, please try again' : ''}
         </PageContentWrapper>
     );
 };
