@@ -14,6 +14,7 @@
     "apollo-boost": "^0.4.3",
     "apollo-link-context": "^1.0.18",
     "babel-plugin-import": "^1.12.0",
+    "camelcase-keys": "^6.1.0",
     "customize-cra": "^0.2.14",
     "graphql": "^14.4.2",
     "less": "^3.9.0",
