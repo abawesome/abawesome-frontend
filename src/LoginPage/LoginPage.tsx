@@ -2,29 +2,20 @@ import React, { FunctionComponent, useState } from 'react';
 import PageContentWrapper from '../components/PageContentWrapper';
 import { Text } from 'rebass';
 import { Input, Button } from 'antd';
-import gql from 'graphql-tag';
-import { useMutation } from '@apollo/react-hooks';
-import { login } from './__generated__/login';
-
-const LOGIN = gql`
-    mutation login($username: String!, $password: String!) {
-        tokenAuth(username: $username, password: $password) {
-            token
-            refreshToken
-        }
-    }
-`;
 
 const LoginPage: FunctionComponent<{}> = () => {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const [status, setStatus] = useState<'valid' | 'invalid' | undefined>(undefined);
-    const [login, { error, data }] = useMutation<login>(LOGIN, {
-        variables: { username, password },
-    });
     const onLoginButtonClick = () =>
-        login()
+        fetch(`${process.env.BACKEND_API_URL}/auth/login` as string, {
+            body: JSON.stringify({
+                email,
+                password,
+            }),
+        })
+            .then(response => response.json())
             .then(result => {
                 if (
                     result &&
@@ -49,7 +40,7 @@ const LoginPage: FunctionComponent<{}> = () => {
             <Input
                 size="large"
                 placeholder="email"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
             />
             <Input.Password
                 size="large"
@@ -59,7 +50,7 @@ const LoginPage: FunctionComponent<{}> = () => {
             <Button type="primary" size="large" onClick={onLoginButtonClick}>
                 Login
             </Button>
-            {status}
+            {status === 'invalid' ? 'Sorry, please try again' : ''}
         </PageContentWrapper>
     );
 };
