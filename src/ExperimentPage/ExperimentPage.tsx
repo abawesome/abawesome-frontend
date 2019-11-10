@@ -11,7 +11,7 @@ import { projectsLink } from '../components/utils';
 import NavBar, { NAVBAR_FRAGMENT } from '../components/NavBar';
 import { Button } from 'antd';
 const EXPERIMENT_PAGE = gql`
-    query ExperimentPage($projectId: GuidGraphType!, $experimentId: GuidGraphType!) {
+    query ExperimentPage($projectId: String!, $experimentId: String!) {
         project(id: $projectId) {
             experiment(experimentId: $experimentId) {
                 id

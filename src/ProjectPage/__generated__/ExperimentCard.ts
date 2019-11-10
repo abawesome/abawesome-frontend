@@ -8,6 +8,6 @@
 
 export interface ExperimentCard {
   __typename: "ExperimentType";
-  id: any | null;
+  id: string | null;
   name: string;
 }

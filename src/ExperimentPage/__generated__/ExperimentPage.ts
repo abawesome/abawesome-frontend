@@ -9,12 +9,12 @@
 export interface ExperimentPage_project_experiment_variants {
   __typename: "VariantType";
   name: string;
-  id: any | null;
+  id: string | null;
 }
 
 export interface ExperimentPage_project_experiment {
   __typename: "ExperimentType";
-  id: any | null;
+  id: string | null;
   name: string;
   variants: (ExperimentPage_project_experiment_variants | null)[] | null;
 }
@@ -23,13 +23,13 @@ export interface ExperimentPage_project {
   __typename: "ProjectType";
   experiment: ExperimentPage_project_experiment | null;
   name: string;
-  id: any | null;
+  id: string | null;
 }
 
 export interface ExperimentPage_me {
   __typename: "UserType";
   userName: string;
-  id: any | null;
+  id: string | null;
 }
 
 export interface ExperimentPage {
@@ -38,6 +38,6 @@ export interface ExperimentPage {
 }
 
 export interface ExperimentPageVariables {
-  projectId: any;
-  experimentId: any;
+  projectId: string;
+  experimentId: string;
 }

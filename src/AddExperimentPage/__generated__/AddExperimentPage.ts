@@ -9,7 +9,7 @@
 export interface AddExperimentPage_me_project {
   __typename: "ProjectType";
   name: string;
-  id: any | null;
+  id: string | null;
 }
 
 export interface AddExperimentPage_me {
@@ -19,7 +19,7 @@ export interface AddExperimentPage_me {
    */
   project: AddExperimentPage_me_project | null;
   userName: string;
-  id: any | null;
+  id: string | null;
 }
 
 export interface AddExperimentPage {
@@ -27,5 +27,5 @@ export interface AddExperimentPage {
 }
 
 export interface AddExperimentPageVariables {
-  projectId: any;
+  projectId: string;
 }

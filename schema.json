@@ -34,7 +34,7 @@
                 "description": null,
                 "type": {
                   "kind": "SCALAR",
-                  "name": "GuidGraphType",
+                  "name": "String",
                   "ofType": null
                 },
                 "defaultValue": "null"
@@ -113,7 +113,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "GuidGraphType",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -128,7 +128,7 @@
                 "description": null,
                 "type": {
                   "kind": "SCALAR",
-                  "name": "GuidGraphType",
+                  "name": "String",
                   "ofType": null
                 },
                 "defaultValue": "null"
@@ -191,16 +191,6 @@
         "possibleTypes": null
       },
       {
-        "kind": "SCALAR",
-        "name": "GuidGraphType",
-        "description": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
         "kind": "OBJECT",
         "name": "ProjectType",
         "description": null,
@@ -226,7 +216,7 @@
                 "description": null,
                 "type": {
                   "kind": "SCALAR",
-                  "name": "GuidGraphType",
+                  "name": "String",
                   "ofType": null
                 },
                 "defaultValue": "null"
@@ -262,7 +252,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "GuidGraphType",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -373,7 +363,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "GuidGraphType",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -476,7 +466,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "GuidGraphType",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -564,7 +554,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "GuidGraphType",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -619,7 +609,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "GuidGraphType",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,

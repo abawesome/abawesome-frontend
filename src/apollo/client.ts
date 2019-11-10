@@ -7,7 +7,7 @@ import gql from 'graphql-tag';
 import { FetchResult } from 'apollo-link';
 
 const refreshHttpLink = createHttpLink({
-    uri: 'http://localhost:8000/api/graphql/',
+    uri: 'http://localhost:5000/graphql/',
 });
 
 export const refreshClient = new ApolloClient({
@@ -84,13 +84,13 @@ const customFetch = (uri: string, options: RequestInit) => {
 };
 
 const httpLink = createHttpLink({
-    uri: 'http://localhost:8000/api/graphql',
+    uri: 'http://localhost:5000/graphql',
     fetch: customFetch,
 });
 
 const authLink = setContext((_, { headers }) => {
     // get the authentication token from local storage if it exists
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('access-token');
     // return the headers to the context so httpLink can read them
     return {
         headers: {

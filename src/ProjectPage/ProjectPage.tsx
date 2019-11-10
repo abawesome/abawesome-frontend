@@ -12,7 +12,7 @@ import ExperimentsList from './ExperimentsList';
 import NavBar, { NAVBAR_FRAGMENT } from '../components/NavBar';
 import { projectsLink } from '../components/utils';
 const PROJECT_PAGE = gql`
-    query ProjectPage($projectId: GuidGraphType!) {
+    query ProjectPage($projectId: String!) {
         me {
             project(projectId: $projectId) {
                 id

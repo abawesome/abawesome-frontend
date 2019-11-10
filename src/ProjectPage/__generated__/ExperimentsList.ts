@@ -8,7 +8,7 @@
 
 export interface ExperimentsList_experiments {
   __typename: "ExperimentType";
-  id: any | null;
+  id: string | null;
   name: string;
 }
 

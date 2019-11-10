@@ -13,7 +13,7 @@ import { Input, Form, Button, List } from 'antd';
 import styled from 'styled-components';
 import RightAlignBox from '../components/RightAlignBox';
 const ADD_EXPERIMENT_PAGE = gql`
-    query AddExperimentPage($projectId: GuidGraphType!) {
+    query AddExperimentPage($projectId: String!) {
         me {
             project(projectId: $projectId) {
                 name

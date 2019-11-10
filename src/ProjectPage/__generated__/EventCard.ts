@@ -9,5 +9,5 @@
 export interface EventCard {
   __typename: "EventType";
   name: string;
-  id: any | null;
+  id: string | null;
 }

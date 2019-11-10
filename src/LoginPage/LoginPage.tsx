@@ -25,13 +25,10 @@ const LoginPage: FunctionComponent<{}> = () => {
             .then(result => {
                 if (
                     result &&
-                    result.data &&
-                    result.data.tokenAuth &&
-                    result.data.tokenAuth.token &&
-                    result.data.tokenAuth.refreshToken
+                   result.token
                 ) {
-                    localStorage.setItem('access-token', result.data.tokenAuth.token);
-                    localStorage.setItem('refresh-token', result.data.tokenAuth.refreshToken);
+                    localStorage.setItem('access-token', result.token);
+                    // localStorage.setItem('refresh-token', result.tokenAuth.refreshToken);
                     setStatus('valid');
                 } else {
                     setStatus('invalid');

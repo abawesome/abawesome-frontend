@@ -24,7 +24,7 @@ const ExperimentsList: FunctionComponent<Props> = ({ experiments, projectId }) =
         <ExpandableList
             items={(experiments || [])
                 .map(experiment => ({
-                item: <ExperimentCard key={experiment && experiment.id} {...(experiment || {id:"", name:"", __typename:"ExperimentType"})} projectId={projectId} />,
+                item: <ExperimentCard key={(experiment && experiment.id) || ""} {...(experiment || {id:"", name:"", __typename:"ExperimentType"})} projectId={projectId} />,
             }))}
         />
     );
