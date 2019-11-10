@@ -2,8 +2,6 @@ import React, { FunctionComponent, useState } from 'react';
 import PageContentWrapper from '../components/PageContentWrapper';
 import { Text } from 'rebass';
 import { Input, Button } from 'antd';
-import gql from 'graphql-tag';
-import { useMutation } from '@apollo/react-hooks';
 
 const LoginPage: FunctionComponent<{}> = () => {
     const [email, setEmail] = useState('');
@@ -56,7 +54,7 @@ const LoginPage: FunctionComponent<{}> = () => {
             <Button type="primary" size="large" onClick={onLoginButtonClick}>
                 Login
             </Button>
-            {status}
+            {status === 'invalid' ? 'Sorry, please try again' : ''}
         </PageContentWrapper>
     );
 };
