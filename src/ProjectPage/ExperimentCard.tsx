@@ -10,7 +10,6 @@ export const EXPERIMENT_CARD_FRAGMENT = gql`
     fragment ExperimentCard on ExperimentType {
         id
         name
-        readableExperimentId
     }
 `;
 
@@ -18,12 +17,11 @@ interface Props extends IExperimentCard {
     projectId: string;
 }
 
-const ExperimentCard: FunctionComponent<Props> = ({ id, name, readableExperimentId, projectId }) => {
+const ExperimentCard: FunctionComponent<Props> = ({ id, name, projectId }) => {
     return (
-        <StylelessLink to={`${projectId}/experiment/${readableExperimentId}`}>
+        <StylelessLink to={`${projectId}/experiment/${id}`}>
             <Card p={2}>
                 <Text fontSize={20}>{name}</Text>
-                <Text fontSize={14}>{readableExperimentId}</Text>
             </Card>
         </StylelessLink>
     );

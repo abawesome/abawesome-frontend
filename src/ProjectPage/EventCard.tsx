@@ -10,15 +10,13 @@ export const EVENT_CARD_FRAGMENT = gql`
     fragment EventCard on EventType {
         name
         id
-        readableEventId
     }
 `;
 
-const EventCard: FunctionComponent<IEventCard> = ({ id, name, readableEventId }) => {
+const EventCard: FunctionComponent<IEventCard> = ({ id, name }) => {
     return (
         <Card p={2}>
             <Text fontSize={20}>{name}</Text>
-            <Text fontSize={14}>{readableEventId}</Text>
         </Card>
     );
 };

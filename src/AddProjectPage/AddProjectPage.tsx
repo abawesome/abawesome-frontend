@@ -24,11 +24,11 @@ const ADD_PROJECT_PAGE = gql`
 `;
 
 const CREATE_PROJECT = gql`
-    mutation CreateProjectMutation($name: String!) {
-        createProject(name: $name) {
-            project {
-                name
-            }
+    mutation CreateProjectMutation($projectInput: ProjectInput!) {
+        createProject(project: $projectInput) {
+            name
+            description
+            privateApiKey
         }
     }
 `;
@@ -39,20 +39,24 @@ const AddProjectPage: FunctionComponent = () => {
         CreateProjectMutation,
         CreateProjectMutationVariables
     >(CREATE_PROJECT);
-    const [projectInput, setprojectInput] = useState('');
-    if (!data) return null;
-    if (!data.me) return null;
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+
+    const handleOnAddButtonClick = () => {
+        createProject({ variables: { projectInput: { name, description } } });
+    };
+
     return (
         <>
-            <NavBar
-                path={[
-                    projectsLink,
-                    {
-                        label: 'Add a new project',
-                    },
-                ]}
-                {...data.me}
-            />
+            {/*<NavBar*/}
+            {/*    path={[*/}
+            {/*        projectsLink,*/}
+            {/*        {*/}
+            {/*            label: 'Add a new project',*/}
+            {/*        },*/}
+            {/*    ]}*/}
+            {/*    {...data.me}*/}
+            {/*/>*/}
             <PageContentWrapper>
                 <Text fontSize={48}>Add a new project</Text>
 
@@ -62,13 +66,19 @@ const AddProjectPage: FunctionComponent = () => {
                             <Input
                                 size="large"
                                 placeholder="Project Name"
-                                value={projectInput}
-                                onChange={event => setprojectInput(event.target.value)}
+                                value={name}
+                                onChange={event => setName(event.target.value)}
+                            />
+                            <Input
+                                size="large"
+                                placeholder="Project Description"
+                                value={description}
+                                onChange={event => setDescription(event.target.value)}
                             />
                             <RightAlignBox mt={3}>
                                 <Button
-                                    onClick={() => createProject({ variables: { name: projectInput } })}
-                                    disabled={!projectInput}
+                                    onClick={handleOnAddButtonClick}
+                                    disabled={!name}
                                     size="large"
                                     type="primary"
                                     htmlType="submit"

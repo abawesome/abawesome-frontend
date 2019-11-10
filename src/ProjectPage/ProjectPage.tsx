@@ -5,12 +5,10 @@ import CategoryBar from '../components/CategoryBar';
 import Card from '../components/Card';
 import ProjectStatistics from './ProjectStatistics';
 import Experiments, { EXPERIMENTS_LIST_FRAGMENT } from './ExperimentsList';
-import Events, { EVENTS_LIST_FRAGMENT } from './EventsList';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import { ProjectPage as IProjectPage, ProjectPageVariables } from './__generated__/ProjectPage';
 import ExperimentsList from './ExperimentsList';
-import EventsList from './EventsList';
 import NavBar, { NAVBAR_FRAGMENT } from '../components/NavBar';
 import { projectsLink } from '../components/utils';
 const PROJECT_PAGE = gql`
@@ -20,14 +18,12 @@ const PROJECT_PAGE = gql`
                 id
                 name
                 ...ExperimentsList
-                ...EventsList
             }
             ...NavBar
             id
         }
     }
     ${EXPERIMENTS_LIST_FRAGMENT}
-    ${EVENTS_LIST_FRAGMENT}
     ${NAVBAR_FRAGMENT}
 `;
 
@@ -61,9 +57,6 @@ const ProjectPage: FunctionComponent<Props> = ({ projectId }) => {
                     <ExperimentsList {...data.me.project} loading={loading} projectId={projectId} />
                 </Flex>
                 <CategoryBar title="events" addButtonLink={`/project/${projectId}/events/new`} />
-                <Flex flexWrap="wrap" mx={-2}>
-                    <EventsList {...data.me.project} />
-                </Flex>
             </PageContentWrapper>
         </>
     );

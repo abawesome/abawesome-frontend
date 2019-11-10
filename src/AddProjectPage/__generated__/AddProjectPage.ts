@@ -8,8 +8,8 @@
 
 export interface AddProjectPage_me {
   __typename: "UserType";
-  name: string;
-  id: any;
+  userName: string;
+  id: string | null;
 }
 
 export interface AddProjectPage {

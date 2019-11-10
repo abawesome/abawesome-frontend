@@ -2,18 +2,17 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
+import { ProjectInput } from "./../../__generated__/graphql-global-types";
+
 // ====================================================
 // GraphQL mutation operation: CreateProjectMutation
 // ====================================================
 
-export interface CreateProjectMutation_createProject_project {
+export interface CreateProjectMutation_createProject {
   __typename: "ProjectType";
   name: string;
-}
-
-export interface CreateProjectMutation_createProject {
-  __typename: "CreateProject";
-  project: CreateProjectMutation_createProject_project | null;
+  description: string | null;
+  privateApiKey: string | null;
 }
 
 export interface CreateProjectMutation {
@@ -21,5 +20,5 @@ export interface CreateProjectMutation {
 }
 
 export interface CreateProjectMutationVariables {
-  name: string;
+  projectInput: ProjectInput;
 }

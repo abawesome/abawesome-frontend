@@ -20,7 +20,7 @@ const NavbarBox = styled(Flex)`
 
 export const NAVBAR_FRAGMENT = gql`
     fragment NavBar on UserType {
-        name
+        userName
         id
     }
 `;
@@ -31,7 +31,7 @@ interface Props extends INavBar {
 
 const Logo = () => <Image height={48} src={logo} />;
 
-const NavBar: FunctionComponent<Props> = ({ path, name }) => {
+const NavBar: FunctionComponent<Props> = ({ path, userName }) => {
     const ProjectPath = () => (
         <Breadcrumb separator=">">
             {path.map(pathItem => (
@@ -55,7 +55,7 @@ const NavBar: FunctionComponent<Props> = ({ path, name }) => {
                 <StylelessLink to="">Settings</StylelessLink>
             </Box>
             <Box mr={3}>
-                <StylelessLink to="">Hi {name}!</StylelessLink>
+                <StylelessLink to="">Hi {userName}!</StylelessLink>
             </Box>
 
             <Avatar size={48} src="https://picsum.photos/id/1027/100/100" />
