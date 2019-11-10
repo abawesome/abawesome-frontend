@@ -15,7 +15,6 @@ const DASHBOARD_PAGE = gql`
     query DashboardPage {
         me {
             projects {
-                readableProjectId
                 name
                 id
             }
@@ -38,16 +37,16 @@ const DashboardPage: FunctionComponent = () => {
                 <Text fontSize={48}>Your dashboard</Text>
                 <CategoryBar title="your projects" addButtonLink={'/projects/new'} />
                 <Flex flexWrap="wrap" mx={-2}>
-                    {projects.map(project => (
-                        <Box width={[1, 1, 1, 1 / 3, 1 / Math.min(5, projects.length)]}>
-                            <StylelessLink to={`/project/${project.readableProjectId}`}>
-                                <Card p={2}>
-                                    <Text fontSize={20}>{project.name}</Text>
-                                    <Text fontSize={14}>{project.readableProjectId}</Text>
-                                </Card>
-                            </StylelessLink>
-                        </Box>
-                    ))}
+                    {/*{projects.map(project => (*/}
+                    {/*    <Box width={[1, 1, 1, 1 / 3, 1 / Math.min(5, projects.length)]}>*/}
+                    {/*        <StylelessLink to={`/project/${project.id}`}>*/}
+                    {/*            <Card p={2}>*/}
+                    {/*                <Text fontSize={20}>{project.name}</Text>*/}
+                    {/*                <Text fontSize={14}>{project.id}</Text>*/}
+                    {/*            </Card>*/}
+                    {/*        </StylelessLink>*/}
+                    {/*    </Box>*/}
+                    {/*))}*/}
                 </Flex>
                 <CategoryBar title="projects shared with you" />
             </PageContentWrapper>

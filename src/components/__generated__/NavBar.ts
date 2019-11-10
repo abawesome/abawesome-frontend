@@ -8,6 +8,6 @@
 
 export interface NavBar {
   __typename: "UserType";
-  name: string;
-  id: any;
+  userName: string;
+  id: any | null;
 }

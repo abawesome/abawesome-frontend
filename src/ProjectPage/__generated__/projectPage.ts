@@ -8,31 +8,28 @@
 
 export interface ProjectPage_me_project_experiments {
   __typename: "ExperimentType";
-  id: any;
+  id: any | null;
   name: string;
-  readableExperimentId: string;
-}
-
-export interface ProjectPage_me_project_events {
-  __typename: "EventType";
-  name: string;
-  id: any;
-  readableEventId: string;
 }
 
 export interface ProjectPage_me_project {
   __typename: "ProjectType";
-  id: any;
+  id: any | null;
   name: string;
-  experiments: ProjectPage_me_project_experiments[];
-  events: ProjectPage_me_project_events[];
+  /**
+   * Experiments in the project
+   */
+  experiments: (ProjectPage_me_project_experiments | null)[] | null;
 }
 
 export interface ProjectPage_me {
   __typename: "UserType";
+  /**
+   * Get project by Id if belongs to user
+   */
   project: ProjectPage_me_project | null;
-  name: string;
-  id: any;
+  userName: string;
+  id: any | null;
 }
 
 export interface ProjectPage {
@@ -40,5 +37,5 @@ export interface ProjectPage {
 }
 
 export interface ProjectPageVariables {
-  projectId: string;
+  projectId: any;
 }

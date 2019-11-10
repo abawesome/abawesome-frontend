@@ -8,16 +8,18 @@
 
 export interface DashboardPage_me_projects {
   __typename: "ProjectType";
-  readableProjectId: string;
   name: string;
-  id: any;
+  id: any | null;
 }
 
 export interface DashboardPage_me {
   __typename: "UserType";
-  projects: DashboardPage_me_projects[];
-  name: string;
-  id: any;
+  /**
+   * Projects belonging to user
+   */
+  projects: (DashboardPage_me_projects | null)[] | null;
+  userName: string;
+  id: any | null;
 }
 
 export interface DashboardPage {

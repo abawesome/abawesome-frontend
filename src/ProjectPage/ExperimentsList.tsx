@@ -22,8 +22,9 @@ interface Props extends IExperimentsList {
 const ExperimentsList: FunctionComponent<Props> = ({ experiments, projectId }) => {
     return (
         <ExpandableList
-            items={[...experiments].map(experiment => ({
-                item: <ExperimentCard key={experiment.id} {...experiment} projectId={projectId} />,
+            items={(experiments || [])
+                .map(experiment => ({
+                item: <ExperimentCard key={experiment && experiment.id} {...(experiment || {id:"", name:"", __typename:"ExperimentType"})} projectId={projectId} />,
             }))}
         />
     );

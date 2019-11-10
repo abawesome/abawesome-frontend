@@ -11,25 +11,24 @@ import { projectsLink } from '../components/utils';
 import NavBar, { NAVBAR_FRAGMENT } from '../components/NavBar';
 import { Button } from 'antd';
 const EXPERIMENT_PAGE = gql`
-    query ExperimentPage($projectId: String!, $experimentId: String!) {
-        me {
-            project(projectId: $projectId) {
-                experiment(experimentId: $experimentId) {
-                    id
-                    name
-                    variants {
-                        name
-                        id
-                        readableVariantId
-                    }
-                }
-                name
+    query ExperimentPage($projectId: GuidGraphType!, $experimentId: GuidGraphType!) {
+        project(id: $projectId) {
+            experiment(experimentId: $experimentId) {
                 id
+                name
+                variants {
+                    name
+                    id
+                }
             }
-            ...NavBar
+            name
             id
         }
+        me {
+            ...NavBar
+        }
     }
+
     ${NAVBAR_FRAGMENT}
 `;
 
@@ -37,17 +36,17 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
     const { loading, data, error } = useQuery<IExperimentPage, ExperimentPageVariables>(EXPERIMENT_PAGE, {
         variables: { projectId, experimentId },
     });
-    if (!data) return null;
-    if (!data.me || !data.me.project || !data.me.project.experiment) return null;
-    const { name, variants } = data.me.project.experiment;
+    if (!data || !data.project || !data.me || !data.project.experiment) return null;
+    if (!data.project.experiment) return null;
+    const { name, variants } = data.project.experiment;
     return (
         <>
             <NavBar
                 path={[
                     projectsLink,
-                    { label: data.me.project.name, link: `/project/${projectId}` },
+                    { label: data.project.name, link: `/project/${projectId}` },
                     {
-                        label: data.me.project.experiment.name,
+                        label: data.project.experiment.name,
                         link: `/project/${projectId}/experiment/${experimentId}`,
                     },
                 ]}
@@ -57,10 +56,9 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
                 <Text fontSize={48}>{name}</Text>
                 <CategoryBar title="variants" />
                 <Flex flexWrap="wrap" mx={-2}>
-                    {variants.map(variant => (
-                        <Card p={2} width={[1, 1, 1, 1 / 3, 1 / Math.min(5, variants.length)]}>
-                            <Text fontSize={20}>{variant.name}</Text>
-                            <Text fontSize={14}>{variant.readableVariantId}</Text>
+                    {(variants || []).map(variant => (
+                        <Card p={2} width={[1, 1, 1, 1 / 3, 1 / Math.min(5, (variants || []).length)]}>
+                            <Text fontSize={20}>{variant && variant.name}</Text>
                         </Card>
                     ))}
                 </Flex>

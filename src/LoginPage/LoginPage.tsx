@@ -4,27 +4,24 @@ import { Text } from 'rebass';
 import { Input, Button } from 'antd';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
-import { login } from './__generated__/login';
-
-const LOGIN = gql`
-    mutation login($username: String!, $password: String!) {
-        tokenAuth(username: $username, password: $password) {
-            token
-            refreshToken
-        }
-    }
-`;
 
 const LoginPage: FunctionComponent<{}> = () => {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const [status, setStatus] = useState<'valid' | 'invalid' | undefined>(undefined);
-    const [login, { error, data }] = useMutation<login>(LOGIN, {
-        variables: { username, password },
-    });
-    const onLoginButtonClick = () =>
-        login()
+    const onLoginButtonClick = () => {
+        fetch(`${process.env.REACT_APP_BACKEND_API_URL}/auth/login` as string, {
+            body: JSON.stringify({
+                email,
+                password,
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'POST',
+        })
+            .then(response => response.json())
             .then(result => {
                 if (
                     result &&
@@ -41,15 +38,18 @@ const LoginPage: FunctionComponent<{}> = () => {
                 }
             })
             .catch(result => {
+                console.log(result);
                 setStatus('invalid');
             });
+    };
     return (
         <PageContentWrapper>
+            <b>{process.env.REACT_APP_BACKEND_API_URL}</b>
             <Text fontSize={48}>Login</Text>
             <Input
                 size="large"
                 placeholder="email"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
             />
             <Input.Password
                 size="large"

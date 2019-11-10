@@ -9,14 +9,17 @@
 export interface AddExperimentPage_me_project {
   __typename: "ProjectType";
   name: string;
-  id: any;
+  id: any | null;
 }
 
 export interface AddExperimentPage_me {
   __typename: "UserType";
+  /**
+   * Get project by Id if belongs to user
+   */
   project: AddExperimentPage_me_project | null;
-  name: string;
-  id: any;
+  userName: string;
+  id: any | null;
 }
 
 export interface AddExperimentPage {
@@ -24,5 +27,5 @@ export interface AddExperimentPage {
 }
 
 export interface AddExperimentPageVariables {
-  projectId: string;
+  projectId: any;
 }

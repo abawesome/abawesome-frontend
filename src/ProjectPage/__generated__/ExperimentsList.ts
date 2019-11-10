@@ -8,12 +8,14 @@
 
 export interface ExperimentsList_experiments {
   __typename: "ExperimentType";
-  id: any;
+  id: any | null;
   name: string;
-  readableExperimentId: string;
 }
 
 export interface ExperimentsList {
   __typename: "ProjectType";
-  experiments: ExperimentsList_experiments[];
+  /**
+   * Experiments in the project
+   */
+  experiments: (ExperimentsList_experiments | null)[] | null;
 }
