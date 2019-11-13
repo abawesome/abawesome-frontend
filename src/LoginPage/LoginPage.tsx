@@ -2,12 +2,14 @@ import React, { FunctionComponent, useState } from 'react';
 import PageContentWrapper from '../components/PageContentWrapper';
 import { Text } from 'rebass';
 import { Input, Button } from 'antd';
+import { Redirect } from 'react-router';
+import paths from '../paths';
 
 const LoginPage: FunctionComponent<{}> = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
     const [status, setStatus] = useState<'valid' | 'invalid' | undefined>(undefined);
+
     const onLoginButtonClick = () => {
         fetch(`${process.env.REACT_APP_BACKEND_API_URL}/auth/login` as string, {
             body: JSON.stringify({
@@ -21,10 +23,7 @@ const LoginPage: FunctionComponent<{}> = () => {
         })
             .then(response => response.json())
             .then(result => {
-                if (
-                    result &&
-                   result.token
-                ) {
+                if (result && result.token) {
                     localStorage.setItem('access-token', result.token);
                     // localStorage.setItem('refresh-token', result.tokenAuth.refreshToken);
                     setStatus('valid');
@@ -33,10 +32,19 @@ const LoginPage: FunctionComponent<{}> = () => {
                 }
             })
             .catch(result => {
-                console.log(result);
                 setStatus('invalid');
             });
     };
+
+    if (status == 'valid') {
+        return (
+            <>
+                Loading stuff
+                <Redirect to={paths.dashboard} />
+            </>
+        );
+    }
+
     return (
         <PageContentWrapper>
             <b>{process.env.REACT_APP_BACKEND_API_URL}</b>

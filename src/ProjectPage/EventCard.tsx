@@ -8,8 +8,8 @@ import { Text } from 'rebass';
 
 export const EVENT_CARD_FRAGMENT = gql`
     fragment EventCard on EventType {
-        name
         id
+        name
     }
 `;
 

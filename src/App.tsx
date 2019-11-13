@@ -38,7 +38,7 @@ const App: React.FunctionComponent<{}> = () => (
         <ThemeProvider theme={theme}>
             <>
                 <BrowserRouter>
-                    <Route exact path="/" component={DashboardPage} />
+                    <Route exact path="/dashboard" component={DashboardPage} />
                     <Route
                         exact
                         path="/project/:projectId/experiment/:experimentId"

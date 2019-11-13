@@ -10,6 +10,7 @@ import { ProjectInput } from "./../../__generated__/graphql-global-types";
 
 export interface CreateProjectMutation_createProject {
   __typename: "ProjectType";
+  id: any | null;
   name: string;
   description: string | null;
   privateApiKey: string | null;

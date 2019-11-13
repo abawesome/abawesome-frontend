@@ -4,14 +4,17 @@ import { Text, Flex, Box } from 'rebass';
 import CategoryBar from '../components/CategoryBar';
 import Card from '../components/Card';
 import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import ProjectStatistics from '../ProjectPage/ProjectStatistics';
 import { projectsLink } from '../components/utils';
 import NavBar, { NAVBAR_FRAGMENT } from '../components/NavBar';
 import { AddExperimentPageVariables, AddExperimentPage as IAddExperimentPage } from './__generated__/AddExperimentPage';
+import { CreateExperimentVariables, CreateExperiment as ICreateExperiment } from './__generated__/CreateExperiment';
 import { Input, Form, Button, List } from 'antd';
 import styled from 'styled-components';
 import RightAlignBox from '../components/RightAlignBox';
+import { Redirect } from 'react-router';
+import paths from '../paths';
 const ADD_EXPERIMENT_PAGE = gql`
     query AddExperimentPage($projectId: String!) {
         me {
@@ -26,15 +29,53 @@ const ADD_EXPERIMENT_PAGE = gql`
     ${NAVBAR_FRAGMENT}
 `;
 
+const CREATE_EXPERIMENT = gql`
+    mutation CreateExperiment($experiment: ExperimentInput!) {
+        createExperiment(experiment: $experiment) {
+            id
+        }
+    }
+`;
+
 const AddExperimentPage: FunctionComponent<AddExperimentPageVariables> = ({ projectId }) => {
     const { loading, data, error } = useQuery<IAddExperimentPage, AddExperimentPageVariables>(ADD_EXPERIMENT_PAGE, {
         variables: { projectId },
     });
+
+    const [createExperiment, { loading: mutationLoading, data: mutationData, error: mutationError }] = useMutation<
+        ICreateExperiment,
+        CreateExperimentVariables
+    >(CREATE_EXPERIMENT);
+
     const [variants, setVariants] = useState<{ name: string }[]>([]);
-    const [experimentInput, setExperimentInput] = useState('');
+    const [experimentName, setExperimentName] = useState('');
+    const [experimentDescription, setExperimentDescription] = useState('');
     const [variantInput, setVariantInput] = useState('');
+
+    const onCreateClick = () => {
+        createExperiment({
+            variables: {
+                experiment: {
+                    projectId,
+                    name: experimentName,
+                    description: experimentDescription,
+                    variants,
+                },
+            },
+        });
+    };
+
     if (!data) return null;
     if (!data.me || !data.me.project || !data.me.project) return null;
+    if (mutationData && mutationData.createExperiment) {
+        return (
+            <>
+                Loading stuff
+                <Redirect to={`/project/${data.me.project.id}/experiment/${mutationData.createExperiment.id}`} />
+            </>
+        );
+    }
+
     const { name } = data.me.project;
     return (
         <>
@@ -57,8 +98,13 @@ const AddExperimentPage: FunctionComponent<AddExperimentPageVariables> = ({ proj
                             <Input
                                 size="large"
                                 placeholder="Experiment Name"
-                                value={experimentInput}
-                                onChange={event => setExperimentInput(event.target.value)}
+                                value={experimentName}
+                                onChange={event => setExperimentName(event.target.value)}
+                            />
+                            <Input
+                                placeholder="Experiment Description"
+                                value={experimentDescription}
+                                onChange={event => setExperimentDescription(event.target.value)}
                             />
                             <Text mt={3} mb={1}>
                                 Variants:
@@ -89,17 +135,15 @@ const AddExperimentPage: FunctionComponent<AddExperimentPageVariables> = ({ proj
                             ></List>
                             <RightAlignBox mt={3}>
                                 <Button
-                                    disabled={!(experimentInput && variants.length > 0)}
+                                    disabled={!(experimentName && variants.length > 0)}
                                     size="large"
                                     type="primary"
                                     htmlType="submit"
+                                    onClick={onCreateClick}
                                 >
                                     Create
                                 </Button>
                             </RightAlignBox>
-                        </Box>
-                        <Box p={4} width={1 / 2}>
-                            <Text>You can include your experiment in your react app by using this snippet:</Text>
                         </Box>
                     </Flex>
                 </Card>

@@ -9,7 +9,7 @@
 export interface DashboardPage_me_projects {
   __typename: "ProjectType";
   name: string;
-  id: string | null;
+  id: any | null;
 }
 
 export interface DashboardPage_me {
@@ -17,9 +17,9 @@ export interface DashboardPage_me {
   /**
    * Projects belonging to user
    */
-  projects: (DashboardPage_me_projects | null)[] | null;
+  projects: DashboardPage_me_projects[];
   userName: string;
-  id: string | null;
+  id: any | null;
 }
 
 export interface DashboardPage {

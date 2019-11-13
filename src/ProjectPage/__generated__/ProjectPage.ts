@@ -8,28 +8,29 @@
 
 export interface ProjectPage_me_project_experiments {
   __typename: "ExperimentType";
-  id: string | null;
+  id: any | null;
   name: string;
 }
 
 export interface ProjectPage_me_project {
   __typename: "ProjectType";
-  id: string | null;
+  id: any | null;
   name: string;
+  description: string | null;
   /**
    * Experiments in the project
    */
-  experiments: (ProjectPage_me_project_experiments | null)[] | null;
+  experiments: ProjectPage_me_project_experiments[];
 }
 
 export interface ProjectPage_me {
   __typename: "UserType";
   /**
-   * Get project by Id if belongs to user
+   * Project belonging to user by project id
    */
   project: ProjectPage_me_project | null;
   userName: string;
-  id: string | null;
+  id: any | null;
 }
 
 export interface ProjectPage {

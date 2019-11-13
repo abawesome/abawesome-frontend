@@ -48,7 +48,8 @@ const DashboardPage: FunctionComponent = () => {
                                         </Card>
                                     </StylelessLink>
                                 </Box>
-                            ))}
+                            ),
+                    )}
                 </Flex>
                 <CategoryBar title="projects shared with you" />
             </PageContentWrapper>

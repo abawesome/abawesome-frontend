@@ -9,5 +9,5 @@
 export interface NavBar {
   __typename: "UserType";
   userName: string;
-  id: string | null;
+  id: any | null;
 }

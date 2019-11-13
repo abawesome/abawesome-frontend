@@ -9,17 +9,17 @@
 export interface AddExperimentPage_me_project {
   __typename: "ProjectType";
   name: string;
-  id: string | null;
+  id: any | null;
 }
 
 export interface AddExperimentPage_me {
   __typename: "UserType";
   /**
-   * Get project by Id if belongs to user
+   * Project belonging to user by project id
    */
   project: AddExperimentPage_me_project | null;
   userName: string;
-  id: string | null;
+  id: any | null;
 }
 
 export interface AddExperimentPage {

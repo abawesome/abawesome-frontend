@@ -3,6 +3,8 @@ import PageContentWrapper from '../components/PageContentWrapper';
 import { Text } from 'rebass';
 import { Input, Button } from 'antd';
 import camelcaseKeys from 'camelcase-keys';
+import paths from './../paths';
+import { Redirect } from 'react-router-dom';
 
 const Registration: FunctionComponent<{}> = () => {
     const [username, setUsername] = useState('');
@@ -10,8 +12,7 @@ const Registration: FunctionComponent<{}> = () => {
     const [password, setPassword] = useState('');
     const [repeatedPassword, setRepeatedPassword] = useState('');
     const [errors, setErrors] = useState<undefined | { [field: string]: string[] }>(undefined);
-
-    const [status, setStatus] = useState<'valid' | 'invalid' | undefined>(undefined);
+    const [success, setSuccess] = useState<boolean>(false);
 
     const onRegisterButtonClick = async () => {
         if (password !== repeatedPassword) {
@@ -19,26 +20,40 @@ const Registration: FunctionComponent<{}> = () => {
         } else {
             setErrors(undefined);
         }
-        const postResponse = await fetch(`${process.env.REACT_APP_BACKEND_API_URL}/auth/register`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                username,
-                email,
-                password,
-            }),
-        });
-        const parsedResponse = camelcaseKeys(await postResponse.json(), { deep: true }) as any;
-        console.log(parsedResponse);
-        setErrors(parsedResponse.errors);
-        localStorage.setItem('access-token', parsedResponse.token);
+        try {
+            const postResponse = await fetch(`${process.env.REACT_APP_BACKEND_API_URL}/auth/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username,
+                    email,
+                    password,
+                }),
+            });
+
+            const parsedResponse = camelcaseKeys(await postResponse.json(), { deep: true }) as any;
+            setErrors(parsedResponse.errors);
+            if (!parsedResponse.errors) {
+                localStorage.setItem('access-token', parsedResponse.token);
+                setSuccess(true);
+            }
+        } catch (e) {
+            setErrors({ ...errors, general: [e.message] });
+        }
     };
+
+    if (success)
+        return (
+            <>
+                Loading stuff
+                <Redirect to={paths.dashboard} />
+            </>
+        );
 
     return (
         <PageContentWrapper>
-            {/* {JSON.stringify(errors)} */}
             <Text fontSize={48}>Register</Text>
             <Input
                 size="large"
@@ -64,7 +79,7 @@ const Registration: FunctionComponent<{}> = () => {
             <Button type="primary" size="large" onClick={onRegisterButtonClick}>
                 Register
             </Button>
-            {status !== 'invalid' ? 'Sorry, please try again' : ''}
+            {errors && errors.general && <p>{errors.general[0]}</p>}
         </PageContentWrapper>
     );
 };

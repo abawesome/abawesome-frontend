@@ -9,7 +9,7 @@
 export interface AddProjectPage_me {
   __typename: "UserType";
   userName: string;
-  id: string | null;
+  id: any | null;
 }
 
 export interface AddProjectPage {
