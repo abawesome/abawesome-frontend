@@ -8,6 +8,6 @@
 
 export interface EventCard {
   __typename: "EventType";
+  id: any | null;
   name: string;
-  id: string | null;
 }

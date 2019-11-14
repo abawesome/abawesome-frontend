@@ -9,27 +9,27 @@
 export interface ExperimentPage_project_experiment_variants {
   __typename: "VariantType";
   name: string;
-  id: string | null;
+  id: any | null;
 }
 
 export interface ExperimentPage_project_experiment {
   __typename: "ExperimentType";
-  id: string | null;
+  id: any | null;
   name: string;
-  variants: (ExperimentPage_project_experiment_variants | null)[] | null;
+  variants: ExperimentPage_project_experiment_variants[];
 }
 
 export interface ExperimentPage_project {
   __typename: "ProjectType";
   experiment: ExperimentPage_project_experiment | null;
   name: string;
-  id: string | null;
+  id: any | null;
 }
 
 export interface ExperimentPage_me {
   __typename: "UserType";
   userName: string;
-  id: string | null;
+  id: any | null;
 }
 
 export interface ExperimentPage {
