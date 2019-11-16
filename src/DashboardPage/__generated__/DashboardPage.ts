@@ -10,6 +10,7 @@ export interface DashboardPage_me_projects {
   __typename: "ProjectType";
   name: string;
   id: any | null;
+  description: string | null;
 }
 
 export interface DashboardPage_me {

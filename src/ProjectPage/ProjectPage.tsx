@@ -48,13 +48,7 @@ const ProjectPage: FunctionComponent<Props> = ({ projectId }) => {
             <PageContentWrapper>
                 <Text fontSize={48}>{data.me.project.name}</Text>
                 {data.me.project.description && <Text fontSize={24}>{data.me.project.description}</Text>}
-                <CategoryBar title="statistics" />
-                <Flex flexWrap="wrap" mx={-2}>
-                    <Card p={2} width={[1, 1, 1, 1 / 2, 1 / 2]}>
-                        <ProjectStatistics />
-                    </Card>
-                    <Card p={2} width={[1, 1, 1, 1 / 2, 1 / 2]}></Card>
-                </Flex>
+
                 <CategoryBar title="experiments" addButtonLink={`/project/${projectId}/experiments/new`} />
                 <Flex flexWrap="wrap" mx={-2}>
                     <ExperimentsList {...data.me.project} loading={loading} projectId={projectId} />

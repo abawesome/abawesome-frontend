@@ -47,7 +47,6 @@ const LoginPage: FunctionComponent<{}> = () => {
 
     return (
         <PageContentWrapper>
-            <b>{process.env.REACT_APP_BACKEND_API_URL}</b>
             <Text fontSize={48}>Login</Text>
             <Input
                 size="large"

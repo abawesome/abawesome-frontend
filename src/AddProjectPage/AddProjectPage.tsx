@@ -6,7 +6,7 @@ import Card from '../components/Card';
 import gql from 'graphql-tag';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import ProjectStatistics from '../ProjectPage/ProjectStatistics';
-import { projectsLink } from '../components/utils';
+import { dashboardLink } from '../components/utils';
 import NavBar, { NAVBAR_FRAGMENT } from '../components/NavBar';
 import { AddProjectPage as IAddProjectPage } from './__generated__/AddProjectPage';
 import { Input, Form, Button, List } from 'antd';
@@ -62,46 +62,45 @@ const AddProjectPage: FunctionComponent = () => {
         <>
             <NavBar
                 path={[
-                    projectsLink,
+                    dashboardLink,
                     {
                         label: 'Add a new project',
                     },
                 ]}
                 {...data.me}
             />
-            <PageContentWrapper>
+            <PageContentWrapper thin>
                 <Text fontSize={48}>Add a new project</Text>
 
-                <Card my={3}>
-                    <Flex>
-                        <Box p={4}>
-                            <Input
-                                size="large"
-                                placeholder="Project Name"
-                                value={name}
-                                onChange={event => setName(event.target.value)}
-                            />
-                            {/*{mutationError && mutationError && <p>{mutationError.name[0]}</p>}*/}
-                            <Input
-                                size="large"
-                                placeholder="Project Description"
-                                value={description}
-                                onChange={event => setDescription(event.target.value)}
-                            />
-                            {/*{mutationError && mutationError.description && <p>{mutationError.description[0]}</p>}*/}
-                            <RightAlignBox mt={3}>
-                                <Button
-                                    onClick={handleOnAddButtonClick}
-                                    disabled={!name}
-                                    size="large"
-                                    type="primary"
-                                    htmlType="submit"
-                                >
-                                    Create
-                                </Button>
-                            </RightAlignBox>
-                        </Box>
-                    </Flex>
+                <Card cardProps={{ p: 4 }} my={3}>
+                    <Box width={2 / 3}>
+                        <Input
+                            size="large"
+                            placeholder="Project Name"
+                            value={name}
+                            onChange={event => setName(event.target.value)}
+                        />
+                    </Box>
+                    {/*{mutationError && mutationError && <p>{mutationError.name[0]}</p>}*/}
+                    <Box mt={2} width={1}>
+                        <Input.TextArea
+                            placeholder="Project Description"
+                            value={description}
+                            onChange={event => setDescription(event.target.value)}
+                        />
+                    </Box>
+                    {/*{mutationError && mutationError.description && <p>{mutationError.description[0]}</p>}*/}
+                    <RightAlignBox mt={3}>
+                        <Button
+                            onClick={handleOnAddButtonClick}
+                            disabled={!name}
+                            size="large"
+                            type="primary"
+                            htmlType="submit"
+                        >
+                            Create
+                        </Button>
+                    </RightAlignBox>
                 </Card>
             </PageContentWrapper>
         </>
