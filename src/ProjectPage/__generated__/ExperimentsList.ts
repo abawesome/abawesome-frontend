@@ -10,6 +10,7 @@ export interface ExperimentsList_experiments {
   __typename: "ExperimentType";
   id: string | null;
   name: string;
+  description: string;
 }
 
 export interface ExperimentsList {

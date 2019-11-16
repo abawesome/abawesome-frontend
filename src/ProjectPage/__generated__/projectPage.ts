@@ -10,6 +10,7 @@ export interface ProjectPage_me_project_experiments {
   __typename: "ExperimentType";
   id: string | null;
   name: string;
+  description: string;
 }
 
 export interface ProjectPage_me_project {

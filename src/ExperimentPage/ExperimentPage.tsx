@@ -62,14 +62,16 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
                         </Card>
                     ))}
                 </Flex>
-                <CategoryBar title="statistics" />
+                <CategoryBar title="results" />
                 <Flex flexWrap="wrap" mx={-2}>
-                    <Card p={2} width={[1, 1, 1, 1 / 2, 1 / 2]}>
+                    <Card width={[1 / 2]}>
                         <ProjectStatistics />
                     </Card>
-                    <Card p={2} width={[1, 1, 1, 1 / 2, 1 / 2]}></Card>
+                    <Card p={2} width={[1 / 2]}>
+                        <ProjectStatistics />
+                    </Card>
                 </Flex>
-                <CategoryBar title="related events" />
+                <CategoryBar title="questions" />
                 <Flex flexWrap="wrap" mx={-2}></Flex>
             </PageContentWrapper>
         </>

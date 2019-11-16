@@ -70,38 +70,16 @@ const AddExperimentPage: FunctionComponent<AddExperimentPageVariables> = ({ proj
                                     value={variantInput}
                                     onChange={event => setVariantInput(event.target.value)}
                                 />
-                                <Box ml={1}>
-                                    <Button
-                                        onClick={() => setVariants([...variants, { name: variantInput }])}
-                                        size="large"
-                                        type="primary"
-                                        htmlType="submit"
-                                    >
-                                        Add
-                                    </Button>
-                                </Box>
-                            </Flex>
-                            <List
-                                locale={{ emptyText: 'Add the first variant' }}
-                                bordered
-                                dataSource={variants}
-                                renderItem={variant => <List.Item>{variant.name}</List.Item>}
-                            ></List>
-                            <RightAlignBox mt={3}>
-                                <Button
-                                    disabled={!(experimentInput && variants.length > 0)}
-                                    size="large"
-                                    type="primary"
-                                    htmlType="submit"
-                                >
-                                    Create
-                                </Button>
-                            </RightAlignBox>
-                        </Box>
-                        <Box p={4} width={1 / 2}>
-                            <Text>You can include your experiment in your react app by using this snippet:</Text>
-                        </Box>
-                    </Flex>
+                            </Box>
+                    </Box>
+                    <RightAlignBox>
+                        <Button.Group size="large">
+                            <Button onClick={() => history.replace(paths.project(projectId))}>Cancel</Button>
+                            <Button type="primary" onClick={onCreateClick}>
+                                Create Experiment
+                            </Button>
+                        </Button.Group>
+                    </RightAlignBox>
                 </Card>
             </PageContentWrapper>
         </>

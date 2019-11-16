@@ -10,4 +10,5 @@ export interface ExperimentCard {
   __typename: "ExperimentType";
   id: string | null;
   name: string;
+  description: string;
 }
