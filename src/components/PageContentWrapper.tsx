@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from 'react';
 import { Box } from 'rebass';
 
-const PageComponentWrapper: FunctionComponent = ({ children }) => (
-    <Box py={3} mx={[80, 100, 100, 200, 200]}>
+const PageComponentWrapper: FunctionComponent<{ thin?: boolean }> = ({ children, thin = false }) => (
+    <Box py={3} mx={thin ? [80, 150, 150, 300, 500] : [80, 100, 100, 200, 200]}>
         {children}
     </Box>
 );

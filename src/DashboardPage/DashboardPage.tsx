@@ -7,7 +7,7 @@ import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import { DashboardPage as IDashboardPage } from './__generated__/DashboardPage';
 import ProjectStatistics from '../ProjectPage/ProjectStatistics';
-import { projectsLink, dashboardLink } from '../components/utils';
+import { dashboardLink } from '../components/utils';
 import NavBar, { NAVBAR_FRAGMENT } from '../components/NavBar';
 import { Button } from 'antd';
 import StylelessLink from '../components/StylelessLink';
@@ -17,6 +17,7 @@ const DASHBOARD_PAGE = gql`
             projects {
                 name
                 id
+                description
             }
             ...NavBar
             id
@@ -40,15 +41,16 @@ const DashboardPage: FunctionComponent = () => {
                     {projects.map(
                         project =>
                             project && (
-                                <Box width={[1, 1, 1, 1 / 3, 1 / Math.min(5, projects.length)]}>
+                                <Box width={[1, 1, 1, 1 / 3, 1 / 3]}>
                                     <StylelessLink to={`/project/${project.id}`}>
                                         <Card p={2}>
                                             <Text fontSize={20}>{project.name}</Text>
-                                            <Text fontSize={14}>{project.id}</Text>
+                                            <Text fontSize={14}>{project.description}</Text>
                                         </Card>
                                     </StylelessLink>
                                 </Box>
-                            ))}
+                            ),
+                    )}
                 </Flex>
                 <CategoryBar title="projects shared with you" />
             </PageContentWrapper>

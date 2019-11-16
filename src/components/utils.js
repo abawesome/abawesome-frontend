@@ -1,3 +1,2 @@
-export const projectsLink = { label: 'Your projects', link: '/' };
-export const dashboardLink = { label: 'Your dashboard', link: '/' };
-export const sharedProjectsLink = { label: 'Your shared projects', link: '/' };
+export const dashboardLink = { label: 'Your dashboard', link: '/dashboard' };
+export const projectsLink = { label: 'Your projects', link: '/dashboard' };

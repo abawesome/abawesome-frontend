@@ -42,7 +42,7 @@ const App: React.FunctionComponent<{}> = () => (
                 <EventChart />
                 <AnswerChart />
                 <BrowserRouter>
-                    <Route exact path="/" component={DashboardPage} />
+                    <Route exact path="/dashboard" component={DashboardPage} />
                     <Route
                         exact
                         path="/project/:projectId/experiment/:experimentId"

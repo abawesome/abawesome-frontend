@@ -3,12 +3,11 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL fragment: ExperimentCard
+// GraphQL fragment: VariantCard
 // ====================================================
 
-export interface ExperimentCard {
-  __typename: "ExperimentType";
+export interface VariantCard {
+  __typename: "VariantType";
   id: any | null;
   name: string;
-  description: string;
 }

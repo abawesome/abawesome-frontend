@@ -57,8 +57,6 @@ const NavBar: FunctionComponent<Props> = ({ path, userName }) => {
             <Box mr={3}>
                 <StylelessLink to="">Hi {userName}!</StylelessLink>
             </Box>
-
-            <Avatar size={48} src="https://picsum.photos/id/1027/100/100" />
         </NavbarBox>
     );
 };

@@ -12,10 +12,30 @@ export enum OwnershipType {
   READ_WRITE = "READ_WRITE",
 }
 
+export enum QuestionKind {
+  RATING = "RATING",
+  YES_NO = "YES_NO",
+}
+
 export enum ShareStatus {
   NONE = "NONE",
   READ_ONLY = "READ_ONLY",
   READ_WRITE = "READ_WRITE",
+}
+
+export interface EventInput {
+  experimentId?: string | null;
+  name: string;
+  description?: string | null;
+}
+
+export interface ExperimentInput {
+  projectId?: string | null;
+  name: string;
+  description?: string | null;
+  variants?: VariantInput[] | null;
+  events?: EventInput[] | null;
+  questions?: QuestionInput[] | null;
 }
 
 export interface ProjectInput {
@@ -28,6 +48,19 @@ export interface ProjectInput {
 export interface ProjectOwnershipInput {
   userId?: string | null;
   ownership?: OwnershipType | null;
+}
+
+export interface QuestionInput {
+  experimentId?: string | null;
+  name: string;
+  kind?: QuestionKind | null;
+}
+
+export interface VariantInput {
+  experimentId?: string | null;
+  name: string;
+  description?: string | null;
+  photoUrl?: string | null;
 }
 
 //==============================================================

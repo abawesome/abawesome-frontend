@@ -7,7 +7,7 @@ import ProjectStatistics from './ProjectStatistics';
 import Experiments, { EXPERIMENTS_LIST_FRAGMENT } from './ExperimentsList';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
-import { ProjectPage as IProjectPage, ProjectPageVariables } from './__generated__/ProjectPage';
+import { ProjectPage as IProjectPage } from './__generated__/ProjectPage';
 import ExperimentsList from './ExperimentsList';
 import NavBar, { NAVBAR_FRAGMENT } from '../components/NavBar';
 import { projectsLink } from '../components/utils';
@@ -17,6 +17,7 @@ const PROJECT_PAGE = gql`
             project(projectId: $projectId) {
                 id
                 name
+                description
                 ...ExperimentsList
             }
             ...NavBar
@@ -32,9 +33,10 @@ interface Props {
 }
 
 const ProjectPage: FunctionComponent<Props> = ({ projectId }) => {
-    const { loading, data, error } = useQuery<IProjectPage, ProjectPageVariables>(PROJECT_PAGE, {
+    const { loading, data, error } = useQuery<IProjectPage>(PROJECT_PAGE, {
         variables: { projectId },
     });
+
     if (!data) return null;
     if (!data.me || !data.me.project) return null;
     return (
@@ -45,18 +47,12 @@ const ProjectPage: FunctionComponent<Props> = ({ projectId }) => {
             />
             <PageContentWrapper>
                 <Text fontSize={48}>{data.me.project.name}</Text>
-                <CategoryBar title="statistics" />
-                <Flex flexWrap="wrap" mx={-2}>
-                    <Card p={2} width={[1, 1, 1, 1 / 2, 1 / 2]}>
-                        <ProjectStatistics />
-                    </Card>
-                    <Card p={2} width={[1, 1, 1, 1 / 2, 1 / 2]}></Card>
-                </Flex>
+                {data.me.project.description && <Text fontSize={24}>{data.me.project.description}</Text>}
+
                 <CategoryBar title="experiments" addButtonLink={`/project/${projectId}/experiments/new`} />
                 <Flex flexWrap="wrap" mx={-2}>
                     <ExperimentsList {...data.me.project} loading={loading} projectId={projectId} />
                 </Flex>
-                <CategoryBar title="events" addButtonLink={`/project/${projectId}/events/new`} />
             </PageContentWrapper>
         </>
     );
