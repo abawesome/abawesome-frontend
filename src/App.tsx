@@ -12,6 +12,8 @@ import AddExperimentPage from './AddExperimentPage/AddExperimentPage';
 import DashboardPage from './DashboardPage/DashboardPage';
 import AddProjectPage from './AddProjectPage/AddProjectPage';
 import RegistrationPage from './RegistrationPage/RegistrationPage';
+import EventChart from './components/EventChart';
+import AnswerChart from './components/AnswerChart';
 
 const ProjectPageWithParams = ({
     match: {
@@ -37,6 +39,8 @@ const App: React.FunctionComponent<{}> = () => (
     <ApolloProvider client={client}>
         <ThemeProvider theme={theme}>
             <>
+                <EventChart />
+                <AnswerChart />
                 <BrowserRouter>
                     <Route exact path="/dashboard" component={DashboardPage} />
                     <Route

@@ -1,7 +1,7 @@
 module.exports = {
     client: {
         addTypename: true,
-        url: 'http://localhost:5001/graphql',
+        url: 'https://abawesome-rel-staging.azurewebsites.net/graphql',
         includes: ['./src/**'],
         service: {
             name: 'abawesome-backend',
