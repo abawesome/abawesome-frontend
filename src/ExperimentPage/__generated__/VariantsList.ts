@@ -10,6 +10,7 @@ export interface VariantsList_variants {
   __typename: "VariantType";
   id: any | null;
   name: string;
+  description: string;
 }
 
 export interface VariantsList {

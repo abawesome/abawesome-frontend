@@ -21,7 +21,7 @@ interface Props extends IExperimentCard {
 const ExperimentCard: FunctionComponent<Props> = ({ id, name, projectId, description }) => {
     return (
         <StylelessLink to={`${projectId}/experiment/${id}`}>
-            <Card p={2}>
+            <Card p={2} width={1 / 3}>
                 <Text fontSize={20}>{name}</Text>
                 <Text fontSize={14}>{description}</Text>
             </Card>

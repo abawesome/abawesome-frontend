@@ -209,7 +209,9 @@ const AddExperimentPage: FunctionComponent<AddExperimentPageVariables> = ({ proj
                                     }
                                 />
                             </Box>
+                        ))}
                     </Box>
+
                     <RightAlignBox>
                         <Button.Group size="large">
                             <Button onClick={() => history.replace(paths.project(projectId))}>Cancel</Button>

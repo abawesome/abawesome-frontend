@@ -10,6 +10,9 @@ import ProjectStatistics from '../ProjectPage/ProjectStatistics';
 import { projectsLink } from '../components/utils';
 import NavBar, { NAVBAR_FRAGMENT } from '../components/NavBar';
 import { Button } from 'antd';
+import EventChart from '../components/EventChart';
+import AnswerChart from '../components/AnswerChart';
+import VariantCard from './VariantCard';
 const EXPERIMENT_PAGE = gql`
     query ExperimentPage($projectId: String!, $experimentId: String!) {
         project(id: $projectId) {
@@ -19,6 +22,7 @@ const EXPERIMENT_PAGE = gql`
                 variants {
                     name
                     id
+                    description
                 }
             }
             name
@@ -57,22 +61,25 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
                 <CategoryBar title="variants" />
                 <Flex flexWrap="wrap" mx={-2}>
                     {(variants || []).map(variant => (
-                        <Card p={2} width={[1, 1, 1, 1 / 3, 1 / Math.min(5, (variants || []).length)]}>
-                            <Text fontSize={20}>{variant && variant.name}</Text>
-                        </Card>
+                        <VariantCard {...variant} />
                     ))}
                 </Flex>
                 <CategoryBar title="results" />
                 <Flex flexWrap="wrap" mx={-2}>
-                    <Card width={[1 / 2]}>
-                        <ProjectStatistics />
-                    </Card>
                     <Card p={2} width={[1 / 2]}>
                         <ProjectStatistics />
                     </Card>
+                    <Card p={2} width={[1]}>
+                        <EventChart />
+                    </Card>
                 </Flex>
+
                 <CategoryBar title="questions" />
-                <Flex flexWrap="wrap" mx={-2}></Flex>
+                <Flex flexWrap="wrap" mx={-2}>
+                    <Card p={2} width={[1]}>
+                        <AnswerChart />
+                    </Card>
+                </Flex>
             </PageContentWrapper>
         </>
     );

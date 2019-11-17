@@ -7,7 +7,7 @@ import useDimensions from 'react-use-dimensions';
 
 const AnswerChart: FunctionComponent = () => {
     return (
-        <div style={{ width: 400, height: 400 }}>
+        <div style={{ width: '100%', height: 600 }}>
             <ResponsiveBar
                 data={[
                     {
