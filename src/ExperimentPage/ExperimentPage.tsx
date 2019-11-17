@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, Props, useState } from 'react';
 import PageContentWrapper from '../components/PageContentWrapper';
 import { Text, Flex, Box } from 'rebass';
 import CategoryBar from '../components/CategoryBar';
@@ -54,6 +54,36 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
     const { loading, data, error } = useQuery<IExperimentPage, ExperimentPageVariables>(EXPERIMENT_PAGE, {
         variables: { projectId, experimentId },
     });
+
+    const [modifyVariants, setModifyVariants] = useState<IVariantCard[] | []>([]);
+
+    const onDeleteVariantClick = (variant: IVariantCard) => {
+        const newVariants = modifyVariants.filter(variant_ => variant_.id !== variant.id);
+        setModifyVariants(newVariants);
+    };
+
+    //What to pass to this function
+    // const onVariantUpdate = (id: string, change: any) => {
+    //     const variant = modifyVariants.find(variant => variant.id === id);
+    //
+    //     const otherVariants = modifyVariants.filter(variant => variant.id === id);
+    //
+    //     const x: IVariantCard[] = [...otherVariants, changedVariant];
+    //
+    //     setModifyVariants([...otherVariants, changedVariant]);
+    // };
+
+    const onAddVariantClick = () => {
+        const newCard: IVariantCard = {
+            id: [...modifyVariants].length.toString(),
+            name: '',
+            description: '',
+            readableUniqueIdentifier: '',
+            __typename: 'VariantType',
+        };
+        setModifyVariants([...modifyVariants, newCard]);
+    };
+
     if (!data || !data.project || !data.me || !data.project.experiment) return null;
     if (!data.project.experiment) return null;
     const { name, variants, events, questions } = data.project.experiment;
@@ -71,13 +101,31 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
                 {...data.me}
             />
             <PageContentWrapper>
+                <Flex px={2}>
+                    <Text fontSize={48}>{name}</Text>
+                    <Box mx="auto" />
+                    <Button size="large" type="primary">
+                        EDIT
+                    </Button>
+                </Flex>
+
                 <Text fontSize={48}>{name}</Text>
                 <Text fontSize={10}>{experimentId}</Text>
 
                 <CategoryBar title="variants" />
+                <CategoryBar title="variants" addButtonHook={onAddVariantClick} />
                 <Flex flexWrap="wrap" mx={-2}>
-                    {(variants || []).map(variant => (
-                        <VariantCard {...variant} />
+                    {([...variants, ...modifyVariants] || []).map((variant: IVariantCard) => (
+                        <VariantCard
+                            name={variant.name}
+                            experimentId={experimentId}
+                            description={variant.description}
+                            readableUniqueIdentifier={variant.readableUniqueIdentifier}
+                            __typename={'VariantType'}
+                            id={variant.readableUniqueIdentifier}
+                            onDelete={() => onDeleteVariantClick(variant)}
+                            // onUpdate={(change: any) => onVariantUpdate(id, change)}
+                        />
                     ))}
                 </Flex>
                 <CategoryBar title="events" />
