@@ -52,7 +52,6 @@ const DashboardPage: FunctionComponent = () => {
                             ),
                     )}
                 </Flex>
-                <CategoryBar title="projects shared with you" />
             </PageContentWrapper>
         </>
     );

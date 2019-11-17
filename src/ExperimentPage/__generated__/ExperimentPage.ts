@@ -10,6 +10,7 @@ export interface ExperimentPage_project_experiment_variants {
   __typename: "VariantType";
   name: string;
   id: any | null;
+  description: string;
 }
 
 export interface ExperimentPage_project_experiment {

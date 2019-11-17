@@ -10,4 +10,5 @@ export interface VariantCard {
   __typename: "VariantType";
   id: any | null;
   name: string;
+  description: string;
 }

@@ -11,17 +11,15 @@ export const VARIANT_CARD_FRAGMENT = gql`
     fragment VariantCard on VariantType {
         id
         name
+        description
     }
 `;
 
-interface Props extends IVariantCard {
-    experimentId: string;
-}
-
-const VariantCard: FunctionComponent<Props> = ({ id, name }) => {
+const VariantCard: FunctionComponent<IVariantCard> = ({ id, name, description }) => {
     return (
-        <Card p={2}>
+        <Card p={2} width={1 / 3}>
             <Text fontSize={20}>{name}</Text>
+            <Text fontSize={14}>{description}</Text>
         </Card>
     );
 };

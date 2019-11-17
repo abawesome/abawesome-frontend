@@ -39,8 +39,6 @@ const App: React.FunctionComponent<{}> = () => (
     <ApolloProvider client={client}>
         <ThemeProvider theme={theme}>
             <>
-                <EventChart />
-                <AnswerChart />
                 <BrowserRouter>
                     <Route exact path="/dashboard" component={DashboardPage} />
                     <Route
