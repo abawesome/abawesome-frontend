@@ -10,8 +10,8 @@ import ProjectStatistics from '../ProjectPage/ProjectStatistics';
 import { projectsLink } from '../components/utils';
 import NavBar, { NAVBAR_FRAGMENT } from '../components/NavBar';
 import { Button } from 'antd';
-import EventChart from '../components/EventChart';
-import AnswerChart from '../components/AnswerChart';
+import EventChart, { EVENT_CHART_FRAGMENT } from '../components/EventChart';
+import AnswerChart, { ANSWER_CHART_FRAGMENT } from '../components/AnswerChart';
 import VariantCard from './VariantCard';
 const EXPERIMENT_PAGE = gql`
     query ExperimentPage($projectId: String!, $experimentId: String!) {
@@ -24,6 +24,8 @@ const EXPERIMENT_PAGE = gql`
                     id
                     description
                 }
+                ...AnswerChart
+                ...EventChart
             }
             name
             id
@@ -32,7 +34,8 @@ const EXPERIMENT_PAGE = gql`
             ...NavBar
         }
     }
-
+    ${ANSWER_CHART_FRAGMENT}
+    ${EVENT_CHART_FRAGMENT}
     ${NAVBAR_FRAGMENT}
 `;
 
@@ -70,14 +73,14 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
                         <ProjectStatistics />
                     </Card>
                     <Card p={2} width={[1]}>
-                        <EventChart />
+                        <EventChart {...data.project.experiment} />
                     </Card>
                 </Flex>
 
                 <CategoryBar title="questions" />
                 <Flex flexWrap="wrap" mx={-2}>
-                    <Card p={2} width={[1]}>
-                        <AnswerChart />
+                    <Card p={2} cardProps={{ p: 4 }} width={[1]}>
+                        <AnswerChart {...data.project.experiment} />
                     </Card>
                 </Flex>
             </PageContentWrapper>

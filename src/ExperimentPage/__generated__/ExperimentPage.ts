@@ -2,6 +2,8 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
+import { QuestionKind } from "./../../__generated__/graphql-global-types";
+
 // ====================================================
 // GraphQL query operation: ExperimentPage
 // ====================================================
@@ -13,11 +15,43 @@ export interface ExperimentPage_project_experiment_variants {
   description: string;
 }
 
+export interface ExperimentPage_project_experiment_questions_results {
+  __typename: "QuestionResultType";
+  answer: number;
+  count: number;
+  id: any | null;
+  variantId: any | null;
+}
+
+export interface ExperimentPage_project_experiment_questions {
+  __typename: "QuestionType";
+  id: any | null;
+  name: string;
+  kind: QuestionKind | null;
+  results: ExperimentPage_project_experiment_questions_results[];
+}
+
+export interface ExperimentPage_project_experiment_events_results {
+  __typename: "EventResultType";
+  count: number;
+  id: any | null;
+  variantId: any | null;
+}
+
+export interface ExperimentPage_project_experiment_events {
+  __typename: "EventType";
+  id: any | null;
+  name: string;
+  results: ExperimentPage_project_experiment_events_results[];
+}
+
 export interface ExperimentPage_project_experiment {
   __typename: "ExperimentType";
   id: any | null;
   name: string;
   variants: ExperimentPage_project_experiment_variants[];
+  questions: ExperimentPage_project_experiment_questions[];
+  events: ExperimentPage_project_experiment_events[];
 }
 
 export interface ExperimentPage_project {
