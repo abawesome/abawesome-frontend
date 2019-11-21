@@ -14,6 +14,7 @@ import AddProjectPage from './AddProjectPage/AddProjectPage';
 import RegistrationPage from './RegistrationPage/RegistrationPage';
 import EventChart from './components/EventChart';
 import AnswerChart from './components/AnswerChart';
+import MainPage from './MainPage/MainPage';
 
 const ProjectPageWithParams = ({
     match: {
@@ -40,6 +41,7 @@ const App: React.FunctionComponent<{}> = () => (
         <ThemeProvider theme={theme}>
             <>
                 <BrowserRouter>
+                    <Route exact path="/" component={MainPage} />
                     <Route exact path="/dashboard" component={DashboardPage} />
                     <Route
                         exact

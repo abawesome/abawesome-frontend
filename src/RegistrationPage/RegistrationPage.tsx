@@ -4,8 +4,9 @@ import { Text, Box } from 'rebass';
 import { Input, Button } from 'antd';
 import camelcaseKeys from 'camelcase-keys';
 import paths from './../paths';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import Card from '../components/Card';
+import NavBar from '../components/NavBar';
 
 const Registration: FunctionComponent<{}> = () => {
     const [username, setUsername] = useState('');
@@ -54,39 +55,48 @@ const Registration: FunctionComponent<{}> = () => {
         );
 
     return (
-        <PageContentWrapper>
-            <Text fontSize={48}>Register</Text>
-            <Card cardProps={{ p: 4 }}>
-                <Input
-                    size="large"
-                    placeholder="email"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-                />
-                {errors && errors.email && <p>{errors.email[0]}</p>}
-                <Box mt={2}>
-                    <Input.Password
+        <>
+            <NavBar path={[]} />
+
+            <PageContentWrapper thin>
+                <Text fontSize={48} mb={2}>
+                    Create an account
+                </Text>
+                <Card cardProps={{ p: 4 }}>
+                    <Input
                         size="large"
-                        placeholder="password"
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                        placeholder="email"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                     />
-                    {errors && errors.password && <p>{errors.password[0]}</p>}
-                </Box>
-                <Box mt={2}>
-                    <Input.Password
-                        size="large"
-                        placeholder="repeat password"
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRepeatedPassword(e.target.value)}
-                    />
-                    {errors && errors.repeatedPassword && <p>{errors.repeatedPassword[0]}</p>}
-                </Box>
-                <Box mt={2}>
-                    <Button type="primary" size="large" onClick={onRegisterButtonClick}>
-                        Register
-                    </Button>
-                    {errors && errors.general && <p>{errors.general[0]}</p>}
-                </Box>
-            </Card>
-        </PageContentWrapper>
+                    {errors && errors.email && <p>{errors.email[0]}</p>}
+                    <Box mt={2}>
+                        <Input.Password
+                            size="large"
+                            placeholder="password"
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                        />
+                        {errors && errors.password && <p>{errors.password[0]}</p>}
+                    </Box>
+                    <Box mt={2}>
+                        <Input.Password
+                            size="large"
+                            placeholder="repeat password"
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRepeatedPassword(e.target.value)}
+                        />
+                        {errors && errors.repeatedPassword && <p>{errors.repeatedPassword[0]}</p>}
+                    </Box>
+                    <Box mt={2} mb={4}>
+                        <Button type="primary" size="large" onClick={onRegisterButtonClick}>
+                            Register
+                        </Button>
+                        {errors && errors.general && <p>{errors.general[0]}</p>}
+                    </Box>
+                    <Link to={paths.login}>
+                        <Button type="default">I have an account</Button>
+                    </Link>
+                </Card>
+            </PageContentWrapper>
+        </>
     );
 };
 

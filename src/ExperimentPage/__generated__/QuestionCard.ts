@@ -2,17 +2,15 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
+import { QuestionKind } from "./../../__generated__/graphql-global-types";
+
 // ====================================================
-// GraphQL fragment: EventsList
+// GraphQL fragment: QuestionCard
 // ====================================================
 
-export interface EventsList_events {
-  __typename: "EventType";
+export interface QuestionCard {
+  __typename: "QuestionType";
   id: any | null;
   name: string;
-}
-
-export interface EventsList {
-  __typename: "ExperimentType";
-  events: EventsList_events[];
+  kind: QuestionKind | null;
 }

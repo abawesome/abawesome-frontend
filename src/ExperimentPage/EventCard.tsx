@@ -15,8 +15,9 @@ export const EVENT_CARD_FRAGMENT = gql`
 
 const EventCard: FunctionComponent<IEventCard> = ({ id, name }) => {
     return (
-        <Card p={2}>
+        <Card p={2} width={1 / 3}>
             <Text fontSize={20}>{name}</Text>
+            <Text fontSize={10}>{id}</Text>
         </Card>
     );
 };

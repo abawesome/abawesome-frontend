@@ -6,13 +6,15 @@ import Card from '../components/Card';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import { ExperimentPage as IExperimentPage, ExperimentPageVariables } from './__generated__/ExperimentPage';
-import ProjectStatistics from '../ProjectPage/ProjectStatistics';
+import ExperimentStatistics from './ExperimentStatistics';
 import { projectsLink } from '../components/utils';
 import NavBar, { NAVBAR_FRAGMENT } from '../components/NavBar';
 import { Button } from 'antd';
 import EventChart, { EVENT_CHART_FRAGMENT } from '../components/EventChart';
 import AnswerChart, { ANSWER_CHART_FRAGMENT } from '../components/AnswerChart';
 import VariantCard from './VariantCard';
+import EventCard from './EventCard';
+import QuestionCard from './QuestionCard';
 const EXPERIMENT_PAGE = gql`
     query ExperimentPage($projectId: String!, $experimentId: String!) {
         project(id: $projectId) {
@@ -23,6 +25,15 @@ const EXPERIMENT_PAGE = gql`
                     name
                     id
                     description
+                }
+                questions {
+                    name
+                    id
+                    kind
+                }
+                events {
+                    name
+                    id
                 }
                 ...AnswerChart
                 ...EventChart
@@ -45,7 +56,7 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
     });
     if (!data || !data.project || !data.me || !data.project.experiment) return null;
     if (!data.project.experiment) return null;
-    const { name, variants } = data.project.experiment;
+    const { name, variants, events, questions } = data.project.experiment;
     return (
         <>
             <NavBar
@@ -61,21 +72,34 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
             />
             <PageContentWrapper>
                 <Text fontSize={48}>{name}</Text>
+                <Text fontSize={10}>{experimentId}</Text>
+
                 <CategoryBar title="variants" />
                 <Flex flexWrap="wrap" mx={-2}>
                     {(variants || []).map(variant => (
                         <VariantCard {...variant} />
                     ))}
                 </Flex>
-                <CategoryBar title="results" />
+                <CategoryBar title="events" />
                 <Flex flexWrap="wrap" mx={-2}>
-                    <Card p={2} width={[1 / 2]}>
-                        <ProjectStatistics />
-                    </Card>
-                    <Card p={2} width={[1]}>
-                        <EventChart {...data.project.experiment} />
-                    </Card>
+                    {(events || []).map(event => (
+                        <EventCard {...event} />
+                    ))}
                 </Flex>
+                <CategoryBar title="questions" />
+                <Flex flexWrap="wrap" mx={-2}>
+                    {(questions || []).map(question => (
+                        <QuestionCard {...question} />
+                    ))}
+                </Flex>
+                <CategoryBar title="stats" />
+                <Card cardProps={{ p: 2 }} width={[1 / 2]}>
+                    <ExperimentStatistics />
+                </Card>
+                <CategoryBar title="Event Results" />
+                <Card cardProps={{ p: 4 }} width={[1]}>
+                    <EventChart {...data.project.experiment} />
+                </Card>
 
                 <CategoryBar title="questions" />
                 <Flex flexWrap="wrap" mx={-2}>

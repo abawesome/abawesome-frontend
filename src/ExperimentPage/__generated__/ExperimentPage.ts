@@ -25,8 +25,8 @@ export interface ExperimentPage_project_experiment_questions_results {
 
 export interface ExperimentPage_project_experiment_questions {
   __typename: "QuestionType";
-  id: any | null;
   name: string;
+  id: any | null;
   kind: QuestionKind | null;
   results: ExperimentPage_project_experiment_questions_results[];
 }
@@ -40,8 +40,8 @@ export interface ExperimentPage_project_experiment_events_results {
 
 export interface ExperimentPage_project_experiment_events {
   __typename: "EventType";
-  id: any | null;
   name: string;
+  id: any | null;
   results: ExperimentPage_project_experiment_events_results[];
 }
 

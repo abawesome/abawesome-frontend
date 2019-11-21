@@ -1,11 +1,9 @@
 import React, { FunctionComponent, useState } from 'react';
 import PageContentWrapper from '../components/PageContentWrapper';
 import { Text, Flex, Box } from 'rebass';
-import CategoryBar from '../components/CategoryBar';
 import Card from '../components/Card';
 import gql from 'graphql-tag';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import ProjectStatistics from '../ProjectPage/ProjectStatistics';
 import { dashboardLink } from '../components/utils';
 import NavBar, { NAVBAR_FRAGMENT } from '../components/NavBar';
 import { AddProjectPage as IAddProjectPage } from './__generated__/AddProjectPage';

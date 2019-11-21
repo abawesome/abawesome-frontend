@@ -25,13 +25,13 @@ export const NAVBAR_FRAGMENT = gql`
     }
 `;
 
-interface Props extends INavBar {
+interface Props extends Partial<INavBar> {
     path: { label: string; link?: string }[];
 }
 
 const Logo = () => <Image height={48} src={logo} />;
 
-const NavBar: FunctionComponent<Props> = ({ path, userName }) => {
+const NavBar: FunctionComponent<Props> = ({ path, userName, id }) => {
     const ProjectPath = () => (
         <Breadcrumb separator=">">
             {path.map(pathItem => (
@@ -43,20 +43,26 @@ const NavBar: FunctionComponent<Props> = ({ path, userName }) => {
     );
     return (
         <NavbarBox pr={[10, 25, 50, 50, 50]}>
-            <Box width={[80, 100, 100, 200, 200]} pl={[10, 25, 50, 50, 50]}>
-                <Logo />
-            </Box>
+            <Link to={'/'}>
+                <Box width={[80, 100, 100, 200, 200]} pl={[10, 25, 50, 50, 50]}>
+                    <Logo />
+                </Box>
+            </Link>
             <ProjectPath />
             <Spacer />
             <Box mr={3}>
                 <StylelessLink to="">Docs&Tutorial</StylelessLink>
             </Box>
-            <Box mr={3}>
-                <StylelessLink to="">Settings</StylelessLink>
-            </Box>
-            <Box mr={3}>
-                <StylelessLink to="">Hi {userName}!</StylelessLink>
-            </Box>
+            {id && (
+                <Box mr={3}>
+                    <StylelessLink to="">Settings</StylelessLink>
+                </Box>
+            )}
+            {userName && (
+                <Box mr={3}>
+                    <StylelessLink to="">Hi {userName}!</StylelessLink>
+                </Box>
+            )}
         </NavbarBox>
     );
 };

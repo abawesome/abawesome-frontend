@@ -3,7 +3,6 @@ import PageContentWrapper from '../components/PageContentWrapper';
 import { Text, Flex, Box } from 'rebass';
 import CategoryBar from '../components/CategoryBar';
 import Card from '../components/Card';
-import ProjectStatistics from './ProjectStatistics';
 import Experiments, { EXPERIMENTS_LIST_FRAGMENT } from './ExperimentsList';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
@@ -47,7 +46,11 @@ const ProjectPage: FunctionComponent<Props> = ({ projectId }) => {
             />
             <PageContentWrapper>
                 <Text fontSize={48}>{data.me.project.name}</Text>
+
                 {data.me.project.description && <Text fontSize={24}>{data.me.project.description}</Text>}
+                <Box mt={2}>
+                    <Text fontSize={10}>{data.me.project.id}</Text>
+                </Box>
 
                 <CategoryBar title="experiments" addButtonLink={`/project/${projectId}/experiments/new`} />
                 <Flex flexWrap="wrap" mx={-2}>

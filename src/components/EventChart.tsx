@@ -5,6 +5,8 @@ import { Box, Flex, Text } from 'rebass';
 import gql from 'graphql-tag';
 import { EventChart as IEventChart } from './__generated__/EventChart';
 
+export const COLORS = ['#2a4d69', '#4b86b4', '#adcbe3', '#e7eff6', '#b3cde0', '#63ace5'];
+
 export const EVENT_CHART_FRAGMENT = gql`
     fragment EventChart on ExperimentType {
         variants {
@@ -42,10 +44,11 @@ const EventChart: FunctionComponent<IEventChart> = ({ events, variants }) => {
                     data={getValues()}
                     keys={events.map(event => event.name)}
                     indexBy="variant"
-                    margin={{ top: 50, right: 130, bottom: 50, left: 70 }}
+                    groupMode="grouped"
+                    margin={{ top: 50, right: 200, bottom: 50, left: 70 }}
                     padding={0.2}
                     innerPadding={1}
-                    colors={{ scheme: 'nivo' }}
+                    colors={COLORS}
                     axisTop={null}
                     axisRight={null}
                     axisBottom={null}
@@ -60,7 +63,7 @@ const EventChart: FunctionComponent<IEventChart> = ({ events, variants }) => {
                     }}
                     labelSkipWidth={12}
                     labelSkipHeight={12}
-                    labelTextColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+                    labelTextColor={{ from: 'color', modifiers: [['darker', -2]] }}
                     legends={[
                         {
                             dataFrom: 'keys',

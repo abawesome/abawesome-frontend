@@ -9,6 +9,7 @@ import { useQuery } from '@apollo/react-hooks';
 // eslint-disable-next-line @typescript-eslint/camelcase
 import { AnswerChart as IAnswerChart, AnswerChart_questions } from './__generated__/AnswerChart';
 import { QuestionKind } from '../__generated__/graphql-global-types';
+import { COLORS } from './EventChart';
 
 export const ANSWER_CHART_FRAGMENT = gql`
     fragment AnswerChart on ExperimentType {
@@ -67,7 +68,7 @@ const AnswerChart: FunctionComponent<IAnswerChart> = ({ questions, variants }) =
                                 margin={{ top: 50, right: 130, bottom: 50, left: 70 }}
                                 padding={0.2}
                                 innerPadding={1}
-                                colors={{ scheme: 'nivo' }}
+                                colors={COLORS}
                                 axisTop={null}
                                 axisRight={null}
                                 axisBottom={null}

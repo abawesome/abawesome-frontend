@@ -1,9 +1,12 @@
 import React, { FunctionComponent, useState } from 'react';
 import PageContentWrapper from '../components/PageContentWrapper';
-import { Text } from 'rebass';
+import { Text, Box } from 'rebass';
 import { Input, Button } from 'antd';
 import { Redirect } from 'react-router';
 import paths from '../paths';
+import { Link } from 'react-router-dom';
+import NavBar from '../components/NavBar';
+import Card from '../components/Card';
 
 const LoginPage: FunctionComponent<{}> = () => {
     const [email, setEmail] = useState('');
@@ -46,23 +49,37 @@ const LoginPage: FunctionComponent<{}> = () => {
     }
 
     return (
-        <PageContentWrapper>
-            <Text fontSize={48}>Login</Text>
-            <Input
-                size="large"
-                placeholder="email"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-            />
-            <Input.Password
-                size="large"
-                placeholder="password"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-            />
-            <Button type="primary" size="large" onClick={onLoginButtonClick}>
-                Login
-            </Button>
-            {status === 'invalid' ? 'Sorry, please try again' : ''}
-        </PageContentWrapper>
+        <>
+            <NavBar path={[]} />
+            <PageContentWrapper thin>
+                <Text fontSize={48} mb={2}>
+                    Login to your account
+                </Text>
+                <Card cardProps={{ p: 4 }}>
+                    <Input
+                        size="large"
+                        placeholder="email"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                    />
+                    <Box mt={2}>
+                        <Input.Password
+                            size="large"
+                            placeholder="password"
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                        />
+                    </Box>
+                    <Box mt={2} mb={4}>
+                        <Button type="primary" size="large" onClick={onLoginButtonClick}>
+                            Login
+                        </Button>
+                        <Box>{status === 'invalid' ? 'Sorry, please try again' : ''}</Box>
+                    </Box>
+                    <Link to={paths.register}>
+                        <Button type="default">Create an account instead</Button>
+                    </Link>
+                </Card>
+            </PageContentWrapper>
+        </>
     );
 };
 export default LoginPage;
