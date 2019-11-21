@@ -19,17 +19,11 @@ export const VARIANT_CARD_FRAGMENT = gql`
 
 interface Props extends IVariantCard {
     onDelete: any;
-    // onUpdate: any;
+    onUpdate: (id: string, change: Partial<IVariantCard>) => void;
     experimentId: string;
 }
 
-const VariantCard: FunctionComponent<Props> = ({
-    id,
-    name,
-    description,
-    onDelete,
-    // onUpdate,
-}) => {
+const VariantCard: FunctionComponent<Props> = ({ id, name, description, onDelete, onUpdate }) => {
     return (
         <Card p={2}>
             <Flex>
@@ -43,15 +37,20 @@ const VariantCard: FunctionComponent<Props> = ({
                 size="large"
                 placeholder="Variant Name"
                 value={name}
-                // onChange={event => onUpdate({ name: event.target.value })}
+                onChange={event => onUpdate(id, { name: event.target.value })}
             />
             <Text marginTop={2}>Variant's description:</Text>
-            <TextArea rows={2} placeholder="Variant Description" value={description} />
-            {readableUniqueIdentifier !== '' && (
+            <TextArea
+                rows={2}
+                placeholder="Variant Description"
+                value={description}
+                onChange={event => onUpdate(id, { description: event.target.value })}
+            />
+            {id.length > 3 && (
                 <Flex>
                     <Box mx="auto" />
-                    <Text marginTop={2} color={'grey'}>
-                        id: {readableUniqueIdentifier}
+                    <Text marginTop={2} color={'grey'} fontSize={1}>
+                        id: {id}
                     </Text>
                 </Flex>
             )}

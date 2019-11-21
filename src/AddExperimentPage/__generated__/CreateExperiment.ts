@@ -19,4 +19,5 @@ export interface CreateExperiment {
 
 export interface CreateExperimentVariables {
   experiment: ExperimentInput;
+  projectId: string;
 }

@@ -24,13 +24,11 @@ export enum ShareStatus {
 }
 
 export interface EventInput {
-  experimentId?: string | null;
   name: string;
   description?: string | null;
 }
 
 export interface ExperimentInput {
-  projectId?: string | null;
   name: string;
   description?: string | null;
   variants?: VariantInput[] | null;
@@ -51,13 +49,11 @@ export interface ProjectOwnershipInput {
 }
 
 export interface QuestionInput {
-  experimentId?: string | null;
   name: string;
   kind?: QuestionKind | null;
 }
 
 export interface VariantInput {
-  experimentId?: string | null;
   name: string;
   description?: string | null;
   photoUrl?: string | null;
