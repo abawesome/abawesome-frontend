@@ -21,35 +21,49 @@ interface Props extends IVariantCard {
     onDelete: any;
     onUpdate: (id: string, change: Partial<IVariantCard>) => void;
     experimentId: string;
+    editableMode: boolean;
 }
 
-const VariantCard: FunctionComponent<Props> = ({ id, name, description, onDelete, onUpdate }) => {
+const VariantCard: FunctionComponent<Props> = ({ id, name, description, onDelete, onUpdate, editableMode }) => {
     return (
-        <Card p={2}>
+        <Card p={2} width={1 / 3}>
             <Flex>
-                <Text>Variant's name:</Text>
-                <Box mx="auto" />
-                <RightAlignBox padding={0}>
-                    <Button shape="circle" icon="delete" size={'small'} onClick={onDelete} />
-                </RightAlignBox>
+                {editableMode && (
+                    <>
+                        <Box mx="auto" />
+                        <RightAlignBox padding={0}>
+                            <Button shape="circle" icon="delete" size={'small'} onClick={onDelete} />
+                        </RightAlignBox>
+                    </>
+                )}
             </Flex>
-            <Input
-                size="large"
-                placeholder="Variant Name"
-                value={name}
-                onChange={event => onUpdate(id, { name: event.target.value })}
-            />
-            <Text marginTop={2}>Variant's description:</Text>
-            <TextArea
-                rows={2}
-                placeholder="Variant Description"
-                value={description}
-                onChange={event => onUpdate(id, { description: event.target.value })}
-            />
+            {editableMode && (
+                <Input
+                    size="large"
+                    placeholder="Variant Name"
+                    value={name}
+                    onChange={event => onUpdate(id, { name: event.target.value })}
+                />
+            )}
+            {!editableMode && (
+                <Text fontSize={3}>
+                    {name}
+                </Text>
+            )}
+            {editableMode && (
+                <TextArea
+                    rows={2}
+                    placeholder="Variant Description"
+                    value={description}
+                    onChange={event => onUpdate(id, { description: event.target.value })}
+                />
+            )}
+            {!editableMode && description !== '' && <Text>{description}</Text>}
+            {!editableMode && description === '' && <Text color={'grey'}>No description provided</Text>}
             {id.length > 3 && (
                 <Flex>
                     <Box mx="auto" />
-                    <Text marginTop={2} color={'grey'} fontSize={1}>
+                    <Text marginTop={2} color={'grey'} fontSize={10}>
                         id: {id}
                     </Text>
                 </Flex>
