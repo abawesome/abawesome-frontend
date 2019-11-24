@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/static/css/main.7b050883.chunk.css",
-    "main.js": "/static/js/main.d86e7d0e.chunk.js",
-    "main.js.map": "/static/js/main.d86e7d0e.chunk.js.map",
-    "runtime~main.js": "/static/js/runtime~main.a8a9905a.js",
-    "runtime~main.js.map": "/static/js/runtime~main.a8a9905a.js.map",
-    "static/css/2.92593cf2.chunk.css": "/static/css/2.92593cf2.chunk.css",
-    "static/js/2.b1667d6e.chunk.js": "/static/js/2.b1667d6e.chunk.js",
-    "static/js/2.b1667d6e.chunk.js.map": "/static/js/2.b1667d6e.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.8ae416cf4668f5b3160ca84f5fce65e4.js": "/precache-manifest.8ae416cf4668f5b3160ca84f5fce65e4.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/2.92593cf2.chunk.css.map": "/static/css/2.92593cf2.chunk.css.map",
-    "static/css/main.7b050883.chunk.css.map": "/static/css/main.7b050883.chunk.css.map",
-    "static/media/output.webm": "/static/media/output.5bc337cd.webm"
+    "main.css": "/abawesome-frontend/static/css/main.7b050883.chunk.css",
+    "main.js": "/abawesome-frontend/static/js/main.b41a0332.chunk.js",
+    "main.js.map": "/abawesome-frontend/static/js/main.b41a0332.chunk.js.map",
+    "runtime~main.js": "/abawesome-frontend/static/js/runtime~main.fe7451c9.js",
+    "runtime~main.js.map": "/abawesome-frontend/static/js/runtime~main.fe7451c9.js.map",
+    "static/css/2.92593cf2.chunk.css": "/abawesome-frontend/static/css/2.92593cf2.chunk.css",
+    "static/js/2.518a3ce4.chunk.js": "/abawesome-frontend/static/js/2.518a3ce4.chunk.js",
+    "static/js/2.518a3ce4.chunk.js.map": "/abawesome-frontend/static/js/2.518a3ce4.chunk.js.map",
+    "index.html": "/abawesome-frontend/index.html",
+    "precache-manifest.aa6da9d46bc47dc054bc2a60bab1eeb2.js": "/abawesome-frontend/precache-manifest.aa6da9d46bc47dc054bc2a60bab1eeb2.js",
+    "service-worker.js": "/abawesome-frontend/service-worker.js",
+    "static/css/2.92593cf2.chunk.css.map": "/abawesome-frontend/static/css/2.92593cf2.chunk.css.map",
+    "static/css/main.7b050883.chunk.css.map": "/abawesome-frontend/static/css/main.7b050883.chunk.css.map",
+    "static/media/output.webm": "/abawesome-frontend/static/media/output.5bc337cd.webm"
   }
 }
