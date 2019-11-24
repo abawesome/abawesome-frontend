@@ -40,7 +40,7 @@ const App: React.FunctionComponent<{}> = () => (
     <ApolloProvider client={client}>
         <ThemeProvider theme={theme}>
             <>
-                <BrowserRouter>
+                <BrowserRouter basename={process.env.PUBLIC_URL}>
                     <Route exact path="/" component={MainPage} />
                     <Route exact path="/dashboard" component={DashboardPage} />
                     <Route
