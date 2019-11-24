@@ -65,9 +65,11 @@ stages:
     strategy:
       runOnce:
         deploy:
-          steps:            
+          steps:
           - task: AzureWebApp@1
             displayName: 'Azure Web App Deploy: abawesome-rel-prod-front'
+            env:
+              PORT: 8080
             inputs:
               azureSubscription: $(azureSubscription)
               appType: webAppLinux
