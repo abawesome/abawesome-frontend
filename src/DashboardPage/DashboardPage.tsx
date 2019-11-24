@@ -29,7 +29,7 @@ const DASHBOARD_PAGE = gql`
 
 const DashboardPage: FunctionComponent = () => {
     const { loading, data, error } = useQuery<IDashboardPage>(DASHBOARD_PAGE);
-    if (!loading && error) return <Redirect to={paths.register} />; // add error types
+    if (!loading && error) return <Redirect to={paths.login} />; // add error types
     if (loading) return null;
     if (!data) return null;
     if (!data.me || !data.me.projects) return null;

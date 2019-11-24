@@ -3,24 +3,25 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL fragment: ProjectStatistics
+// GraphQL fragment: ExperimentStatistics
 // ====================================================
 
-export interface ProjectStatistics_events_results {
+export interface ExperimentStatistics_events_results {
   __typename: "EventResultType";
   count: number;
   id: any | null;
   variantId: any | null;
 }
 
-export interface ProjectStatistics_events {
+export interface ExperimentStatistics_events {
   __typename: "EventType";
   id: any | null;
   name: string;
-  results: ProjectStatistics_events_results[];
+  results: ExperimentStatistics_events_results[];
 }
 
-export interface ProjectStatistics {
+export interface ExperimentStatistics {
   __typename: "ExperimentType";
-  events: ProjectStatistics_events[];
+  usersTested: number;
+  events: ExperimentStatistics_events[];
 }

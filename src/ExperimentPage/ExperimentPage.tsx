@@ -7,7 +7,7 @@ import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import { ExperimentPage as IExperimentPage, ExperimentPageVariables } from './__generated__/ExperimentPage';
 import { VariantCard as IVariantCard } from './__generated__/VariantCard';
-import ExperimentStatistics from './ExperimentStatistics';
+import ExperimentStatistics, { EXPERIMENT_STATISTICS_FRAGMENT } from './ExperimentStatistics';
 import { projectsLink } from '../components/utils';
 import NavBar, { NAVBAR_FRAGMENT } from '../components/NavBar';
 import { Button } from 'antd';
@@ -39,6 +39,7 @@ const EXPERIMENT_PAGE = gql`
                 }
                 ...AnswerChart
                 ...EventChart
+                ...ExperimentStatistics
             }
             name
             id
@@ -50,6 +51,7 @@ const EXPERIMENT_PAGE = gql`
     ${ANSWER_CHART_FRAGMENT}
     ${EVENT_CHART_FRAGMENT}
     ${NAVBAR_FRAGMENT}
+    ${EXPERIMENT_STATISTICS_FRAGMENT}
 `;
 
 const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId, experimentId }) => {
@@ -186,7 +188,7 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
                 </Flex>
                 <CategoryBar title="stats" />
                 <Card cardProps={{ p: 2 }} width={[1 / 2]}>
-                    <ExperimentStatistics />
+                    <ExperimentStatistics {...data.project.experiment} />
                 </Card>
                 <CategoryBar title="Event Results" />
                 <Card cardProps={{ p: 4 }} width={[1]}>

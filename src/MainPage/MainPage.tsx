@@ -28,23 +28,23 @@ const MainPage: FunctionComponent = () => {
             <PageContentWrapper>
                 <Flex>
                     <Flex width={1 / 2} style={{ height: '70vh', flexDirection: 'column', justifyContent: 'center' }}>
-                        <Text fontSize={30}>
+                        <Text fontSize={34} fontWeight={300}>
                             Leverage the power of ab testing,
                             <br />
                             even in the simplest of applications.
                         </Text>
-                        <Text fontSize={16} fontWeight={600} mt={4}>
+                        <Text fontSize={20} fontWeight={400} mt={4}>
                             Abawesome is a complete solution for AB testing in react.js
                             <br />
                             You focus on good UI ideas, we take care of the rest.
                         </Text>
                         <Flex mt={3}>
                             <Link to={paths.dashboard}>
-                                <Button style={{ flexGrow: 1, marginRight: 10 }} size="large" type="primary">
+                                <Button style={{ marginRight: 10 }} size="large" type="primary">
                                     Try it out
                                 </Button>
                             </Link>
-                            <Button size="large" type="default">
+                            <Button size="large" type="default" style={{ marginRight: 10 }}>
                                 Read the docs
                             </Button>
                         </Flex>

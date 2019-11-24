@@ -52,6 +52,7 @@ export interface ExperimentPage_project_experiment {
   variants: ExperimentPage_project_experiment_variants[];
   questions: ExperimentPage_project_experiment_questions[];
   events: ExperimentPage_project_experiment_events[];
+  usersTested: number;
 }
 
 export interface ExperimentPage_project {

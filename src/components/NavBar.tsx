@@ -5,10 +5,11 @@ import styled from 'styled-components';
 import theme from '../theme';
 import logo from '../assets/logo.png';
 import Spacer from './Spacer';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { NavBar as INavBar } from './__generated__/NavBar';
 import StylelessLink from './StylelessLink';
+import paths from '../paths';
 
 const NavbarBox = styled(Flex)`
     height: 100px;
@@ -41,6 +42,7 @@ const NavBar: FunctionComponent<Props> = ({ path, userName, id }) => {
             ))}
         </Breadcrumb>
     );
+    const history = useHistory();
     return (
         <NavbarBox pr={[10, 25, 50, 50, 50]}>
             <Link to={'/'}>
@@ -51,18 +53,35 @@ const NavBar: FunctionComponent<Props> = ({ path, userName, id }) => {
             <ProjectPath />
             <Spacer />
             <Box mr={3}>
-                <StylelessLink to="">Docs&Tutorial</StylelessLink>
+                {path[0] && path[0].link === paths.dashboard ? null : (
+                    <StylelessLink to={paths.dashboard}>Dashboard</StylelessLink>
+                )}
             </Box>
             {id && (
                 <Box mr={3}>
-                    <StylelessLink to="">Settings</StylelessLink>
+                    <StylelessLink to="">Docs&Tutorial</StylelessLink>
                 </Box>
             )}
             {userName && (
                 <Box mr={3}>
-                    <StylelessLink to="">Hi {userName}!</StylelessLink>
+                    <StylelessLink
+                        onClick={() => {
+                            localStorage.removeItem('access-token');
+                            history.push(paths.login);
+                            window.location.reload();
+                        }}
+                        to={''}
+                    >
+                        Logout
+                    </StylelessLink>
                 </Box>
             )}
+            {!userName && (
+                <Box mr={3}>
+                    <StylelessLink to={paths.login}>Login or register</StylelessLink>
+                </Box>
+            )}
+            {userName && <Box mr={3}>{userName}</Box>}
         </NavbarBox>
     );
 };
