@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "963ca28aa2ce241becca3776dff8e15e",
+    "revision": "0cfdea0b8c142dabf8c9b6644654c721",
     "url": "/abawesome-frontend/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/abawesome-frontend/static/css/2.92593cf2.chunk.css"
   },
   {
-    "revision": "31c07aa1dd5d4d034f40",
+    "revision": "4a850e06dd911c94dff2",
     "url": "/abawesome-frontend/static/css/main.7b050883.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/abawesome-frontend/static/js/2.518a3ce4.chunk.js"
   },
   {
-    "revision": "31c07aa1dd5d4d034f40",
-    "url": "/abawesome-frontend/static/js/main.b41a0332.chunk.js"
+    "revision": "4a850e06dd911c94dff2",
+    "url": "/abawesome-frontend/static/js/main.59b1c30b.chunk.js"
   },
   {
     "revision": "72e752a22a3276774bcc",
