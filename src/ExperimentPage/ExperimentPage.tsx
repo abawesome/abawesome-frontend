@@ -4,7 +4,7 @@ import { Text, Flex, Box } from 'rebass';
 import CategoryBar from '../components/CategoryBar';
 import Card from '../components/Card';
 import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { ExperimentPage as IExperimentPage, ExperimentPageVariables } from './__generated__/ExperimentPage';
 import { VariantCard as IVariantCard } from './__generated__/VariantCard';
 import ExperimentStatistics, { EXPERIMENT_STATISTICS_FRAGMENT } from './ExperimentStatistics';
@@ -54,12 +54,32 @@ const EXPERIMENT_PAGE = gql`
     ${EXPERIMENT_STATISTICS_FRAGMENT}
 `;
 
+const CREATE_VARIANT = gql`
+    mutation createVariantMutation($variant: VariantInput!, $experimentId: String!) {
+        createVariant(variant: $variant, experimentId: $experimentId) {
+            id
+        }
+    }
+`;
+
+const REMOVE_VARIANT = gql`
+    mutation removeVariantMutation($variantId: String!) {
+        removeVariant(variantId: $variantId)
+    }
+`;
+
 const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId, experimentId }) => {
-    const { loading, data, error } = useQuery<IExperimentPage, ExperimentPageVariables>(EXPERIMENT_PAGE, {
+    const { loading, data, refetch, error } = useQuery<IExperimentPage, ExperimentPageVariables>(EXPERIMENT_PAGE, {
         variables: { projectId, experimentId },
     });
-
+    const [createVariant, { data: mutationData, error: mutationError }] = useMutation(CREATE_VARIANT);
+    const [removeVariant, { data: mutationDeleteData, error: mutationDeleteError }] = useMutation(REMOVE_VARIANT);
     const [modifyVariants, setModifyVariants] = useState<IVariantCard[] | []>([]);
+
+    const [createEvent, { data: createEventData, error: createEventError }] = useMutation(CREATE_EVENT);
+    const [removeEvent, { data: eventDeleteData, error: mutationEventDeleteError }] = useMutation(REMOVE_EVENT);
+    const [modifyEvents, setModifyEvents] = useState<IEventCard[] | []>([]);
+
     const [editableMode, setEditableMode] = useState<boolean>(false);
 
     const onDeleteVariantClick = (variant: IVariantCard) => {
@@ -67,16 +87,40 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
         setModifyVariants(newVariants);
     };
 
+    const onSave = async (modifyVariants: IVariantCard[], oldVariants: IVariantCard[]) => {
+        console.log(modifyVariants);
+        const newVariants: IVariantCard[] = modifyVariants.filter(variant => variant.id.length < 2);
+        await Promise.all(
+            newVariants.map(variant =>
+                createVariant({
+                    variables: {
+                        experimentId: experimentId,
+                        variant: {
+                            name: variant.name,
+                            description: variant.description,
+                        },
+                    },
+                }),
+            ),
+        );
+        const oldVariantIds: string[] = modifyVariants.filter(variant => variant.id.length > 2).map(value => value.id);
+        const deletedVariants: IVariantCard[] = oldVariants.filter(variant => !oldVariantIds.includes(variant.id));
+        await Promise.all(
+            deletedVariants.map(variant =>
+                removeVariant({
+                    variables: {
+                        variantId: variant.id,
+                    },
+                }),
+            ),
+        );
+        refetch();
+        console.log(data);
+    };
+
     const onVariantUpdate = (id: string, change: Partial<IVariantCard>) => {
         const index = modifyVariants.findIndex(value => value.id == id);
         if (index === undefined) return; //Should throw error
-        console.log(modifyVariants);
-        console.log(index);
-        console.log(change);
-        console.log([...modifyVariants.slice(0, index)]);
-        console.log({ ...modifyVariants[index], ...change });
-        console.log([...modifyVariants.slice(index + 1)]);
-        console.log('---------------------------------------');
         setModifyVariants([
             ...modifyVariants.slice(0, index),
             { ...modifyVariants[index], ...change },
@@ -86,7 +130,7 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
 
     const onAddVariantClick = () => {
         const newCard: IVariantCard = {
-            id: modifyVariants.length,
+            id: modifyVariants.length.toString(),
             name: '',
             description: '',
             __typename: 'VariantType',
@@ -94,7 +138,7 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
         setModifyVariants([...modifyVariants, newCard]);
     };
 
-    const onAddQuestionClick = () => {
+    const onAddEventClick = () => {
         const newCard: IVariantCard = {
             id: modifyVariants.length,
             name: '',
@@ -142,6 +186,7 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
                             type="primary"
                             onClick={() => {
                                 setEditableMode(false);
+                                onSave(modifyVariants, variants);
                             }}
                         >
                             SAVE
@@ -168,6 +213,7 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
                     {(editableMode ? [...modifyVariants] : [...variants]).map((variant: IVariantCard) => (
                         <VariantCard
                             {...variant}
+                            editableMode={editableMode}
                             experimentId={experimentId}
                             onDelete={() => onDeleteVariantClick(variant)}
                             onUpdate={onVariantUpdate}
