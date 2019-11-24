@@ -32,8 +32,8 @@ const ADD_EXPERIMENT_PAGE = gql`
 `;
 
 const CREATE_EXPERIMENT = gql`
-    mutation CreateExperiment($experiment: ExperimentInput!) {
-        createExperiment(experiment: $experiment) {
+    mutation CreateExperiment($experiment: ExperimentInput!, $projectId: String!) {
+        createExperiment(experiment: $experiment, projectId: $projectId) {
             id
         }
     }
@@ -58,8 +58,8 @@ const AddExperimentPage: FunctionComponent<AddExperimentPageVariables> = ({ proj
     const onCreateClick = () => {
         createExperiment({
             variables: {
+                projectId,
                 experiment: {
-                    projectId,
                     name: experimentName,
                     description: experimentDescription,
                     variants,

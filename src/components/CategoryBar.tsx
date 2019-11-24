@@ -8,13 +8,14 @@ import { Link } from 'react-router-dom';
 interface Props {
     title: string;
     addButtonLink?: string;
+    addButtonHook?: any;
 }
 
 const CategoryNameText = styled(Text)`
     text-transform: uppercase;
 `;
 
-const PageComponentWrapper: FunctionComponent<Props> = ({ title, addButtonLink }) => (
+const PageComponentWrapper: FunctionComponent<Props> = ({ title, addButtonLink, addButtonHook }) => (
     <Flex my={3}>
         <CategoryNameText fontSize={22} fontWeight={300}>
             {title}
@@ -26,6 +27,11 @@ const PageComponentWrapper: FunctionComponent<Props> = ({ title, addButtonLink }
                     NEW
                 </Button>
             </Link>
+        )}
+        {addButtonHook && (
+            <Button onClick={() => addButtonHook()} size="large" type="primary">
+                NEW
+            </Button>
         )}
     </Flex>
 );

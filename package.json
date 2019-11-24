@@ -51,7 +51,7 @@
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",
-    "update-schema": "apollo client:download-schema --endpoint=https://abawesome-rel-staging.azurewebsites.net/graphql schema.json",
+    "update-schema": "apollo client:download-schema --endpoint=http://localhost:5000/graphql schema.json",
     "generate-graphql-types": "find . -regex './src/.*__generated__.*' -type d -exec rm -rf {} \\; ; apollo client:codegen --addTypename --target=typescript --globalTypesFile=src/__generated__/graphql-global-types.ts --localSchemaFile=schema.json"
   },
   "eslintConfig": {
