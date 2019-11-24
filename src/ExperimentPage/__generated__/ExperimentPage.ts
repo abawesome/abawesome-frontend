@@ -41,6 +41,7 @@ export interface ExperimentPage_project_experiment_events_results {
 export interface ExperimentPage_project_experiment_events {
   __typename: "EventType";
   name: string;
+  description: string;
   id: any | null;
   results: ExperimentPage_project_experiment_events_results[];
 }

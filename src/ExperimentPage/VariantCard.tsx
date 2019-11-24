@@ -28,11 +28,13 @@ const VariantCard: FunctionComponent<Props> = ({ id, name, description, onDelete
     return (
         <Card p={2} width={1 / 3}>
             <Flex>
-                <Box mx="auto" />
                 {editableMode && (
-                    <RightAlignBox padding={0}>
-                        <Button shape="circle" icon="delete" size={'small'} onClick={onDelete} />
-                    </RightAlignBox>
+                    <>
+                        <Box mx="auto" />
+                        <RightAlignBox padding={0}>
+                            <Button shape="circle" icon="delete" size={'small'} onClick={onDelete} />
+                        </RightAlignBox>
+                    </>
                 )}
             </Flex>
             {editableMode && (
@@ -44,7 +46,7 @@ const VariantCard: FunctionComponent<Props> = ({ id, name, description, onDelete
                 />
             )}
             {!editableMode && (
-                <Text marginTop={2} fontSize={3}>
+                <Text fontSize={3}>
                     {name}
                 </Text>
             )}

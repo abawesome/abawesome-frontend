@@ -16,6 +16,7 @@ import AnswerChart, { ANSWER_CHART_FRAGMENT } from '../components/AnswerChart';
 import VariantCard from './VariantCard';
 import EventCard from './EventCard';
 import QuestionCard from './QuestionCard';
+import { EventCard as IEventCard } from './__generated__/EventCard';
 
 const EXPERIMENT_PAGE = gql`
     query ExperimentPage($projectId: String!, $experimentId: String!) {
@@ -35,6 +36,7 @@ const EXPERIMENT_PAGE = gql`
                 }
                 events {
                     name
+                    description
                     id
                 }
                 ...AnswerChart
@@ -68,6 +70,20 @@ const REMOVE_VARIANT = gql`
     }
 `;
 
+const CREATE_EVENT = gql`
+    mutation createEventMutation($event: EventInput!, $experimentId: String!) {
+        createEvent(event: $event, experimentId: $experimentId) {
+            id
+        }
+    }
+`;
+
+const REMOVE_EVENT = gql`
+    mutation removeEventMutation($eventId: String!) {
+        removeEvent(eventId: $eventId)
+    }
+`;
+
 const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId, experimentId }) => {
     const { loading, data, refetch, error } = useQuery<IExperimentPage, ExperimentPageVariables>(EXPERIMENT_PAGE, {
         variables: { projectId, experimentId },
@@ -87,7 +103,19 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
         setModifyVariants(newVariants);
     };
 
-    const onSave = async (modifyVariants: IVariantCard[], oldVariants: IVariantCard[]) => {
+    const onDeleteEventClick = (id: string) => {
+        console.log(modifyEvents);
+        const newEvents = modifyEvents.filter(event_ => event_.id !== id);
+        setModifyEvents(newEvents);
+        console.log(modifyEvents);
+    };
+
+    const onSave = async (
+        modifyVariants: IVariantCard[],
+        oldVariants: IVariantCard[],
+        modifyEvents: IEventCard[],
+        oldEvents: IEventCard[],
+    ) => {
         console.log(modifyVariants);
         const newVariants: IVariantCard[] = modifyVariants.filter(variant => variant.id.length < 2);
         await Promise.all(
@@ -114,6 +142,31 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
                 }),
             ),
         );
+        const newEvents: IEventCard[] = modifyEvents.filter(event => event.id.length < 2);
+        await Promise.all(
+            newEvents.map(event =>
+                createEvent({
+                    variables: {
+                        experimentId: experimentId,
+                        event: {
+                            name: event.name,
+                            description: event.description
+                        },
+                    },
+                }),
+            ),
+        );
+        const oldEventsIds: string[] = modifyEvents.filter(event => event.id.length > 2).map(event => event.id);
+        const deletedEvents: IEventCard[] = oldEvents.filter(event => !oldEventsIds.includes(event.id));
+        await Promise.all(
+            deletedEvents.map(event =>
+                removeEvent({
+                    variables: {
+                        eventId: event.id,
+                    },
+                }),
+            ),
+        );
         refetch();
         console.log(data);
     };
@@ -128,6 +181,16 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
         ]);
     };
 
+    const onEventUpdate = (id: string, change: Partial<IEventCard>) => {
+        const index = modifyEvents.findIndex(value => value.id == id);
+        if (index === undefined) return; //Should throw error
+        setModifyEvents([
+            ...modifyEvents.slice(0, index),
+            { ...modifyEvents[index], ...change },
+            ...modifyEvents.slice(index + 1),
+        ]);
+    };
+
     const onAddVariantClick = () => {
         const newCard: IVariantCard = {
             id: modifyVariants.length.toString(),
@@ -139,13 +202,13 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
     };
 
     const onAddEventClick = () => {
-        const newCard: IVariantCard = {
-            id: modifyVariants.length,
+        const newEvent: IEventCard = {
+            id: modifyVariants.length.toString(),
             name: '',
             description: '',
-            __typename: 'VariantType',
+            __typename: 'EventType',
         };
-        setModifyVariants([...modifyVariants, newCard]);
+        setModifyEvents([...modifyEvents, newEvent]);
     };
 
     if (!data || !data.project || !data.me || !data.project.experiment) return null;
@@ -165,8 +228,10 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
                 {...data.me}
             />
             <PageContentWrapper>
-                <Flex px={2}>
-                    <Text fontSize={48}>{name}</Text>
+                <Flex px={0}>
+                    <Text fontSize={48} marginLeft={-8}>
+                        {name}
+                    </Text>
                     <Box mx="auto" />
                     {!editableMode && (
                         <Button
@@ -174,6 +239,7 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
                             type="primary"
                             onClick={() => {
                                 setModifyVariants(variants);
+                                setModifyEvents(events);
                                 setEditableMode(true);
                             }}
                         >
@@ -186,7 +252,7 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
                             type="primary"
                             onClick={() => {
                                 setEditableMode(false);
-                                onSave(modifyVariants, variants);
+                                onSave(modifyVariants, variants, modifyEvents, events);
                             }}
                         >
                             SAVE
@@ -194,6 +260,10 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
                     )}
                     {editableMode && (
                         <Button
+                            style={{
+                                marginLeft: 10,
+                                marginRight: -5,
+                            }}
                             size="large"
                             type="danger"
                             onClick={() => {
@@ -220,13 +290,20 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
                         />
                     ))}
                 </Flex>
-                <CategoryBar title="events" />
+                <CategoryBar title="events" addButtonHook={editableMode ? onAddEventClick : undefined} />
                 <Flex flexWrap="wrap" mx={-2}>
-                    {(events || []).map(event => (
-                        <EventCard {...event} />
-                    ))}
+                    {(editableMode ? [...modifyEvents] : [...events])
+                        .filter(event => !event.name.startsWith('AUTO__'))
+                        .map(event => (
+                            <EventCard
+                                {...event}
+                                onDelete={() => onDeleteEventClick(event.id)}
+                                onUpdate={onEventUpdate}
+                                editableMode={editableMode}
+                            />
+                        ))}
                 </Flex>
-                <CategoryBar title="questions" />
+                <CategoryBar title="questions" addButtonHook={editableMode ? onAddVariantClick : undefined} />
                 <Flex flexWrap="wrap" mx={-2}>
                     {(questions || []).map(question => (
                         <QuestionCard {...question} />
