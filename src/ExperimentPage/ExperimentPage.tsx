@@ -14,8 +14,10 @@ import { Button } from 'antd';
 import EventChart, { EVENT_CHART_FRAGMENT } from '../components/EventChart';
 import AnswerChart, { ANSWER_CHART_FRAGMENT } from '../components/AnswerChart';
 import { EventCard as IEventCard } from './__generated__/EventCard';
+import { QuestionCard as IQuestionCard } from './__generated__/QuestionCard';
 import VariantsList from './VariantList';
 import EventsList from './EventList';
+import QuestionsList from './QuestionList';
 
 const EXPERIMENT_PAGE = gql`
     query ExperimentPage($projectId: String!, $experimentId: String!) {
@@ -31,6 +33,7 @@ const EXPERIMENT_PAGE = gql`
                 questions {
                     name
                     id
+                    description
                     kind
                 }
                 events {
@@ -57,7 +60,8 @@ const EXPERIMENT_PAGE = gql`
 
 const CREATE_VARIANT = gql`
     mutation createVariantMutation($variant: VariantInput!, $experimentId: String!) {
-        createVariant(variant: $variant, experimentId: $experimentId) {
+        createVariant(variant: $variant, experimentId: $experimentId)
+        {
             id
         }
     }
@@ -71,7 +75,7 @@ const REMOVE_VARIANT = gql`
 
 const CREATE_EVENT = gql`
     mutation createEventMutation($event: EventInput!, $experimentId: String!) {
-        createEvent(event: $event, experimentId: $experimentId) {
+        createEvent(event: $event, experimentId: $experimentId){
             id
         }
     }
@@ -80,6 +84,20 @@ const CREATE_EVENT = gql`
 const REMOVE_EVENT = gql`
     mutation removeEventMutation($eventId: String!) {
         removeEvent(eventId: $eventId)
+    }
+`;
+
+const CREATE_QUESTION = gql`
+    mutation createQuestionMutation($question: QuestionInput!, $experimentId: String!) {
+        createQuestion(question: $question, experimentId: $experimentId){
+            id
+        }
+    }
+`;
+
+const REMOVE_QUESTION = gql`
+    mutation removeQuestionMutation($questionId: String!) {
+        removeQuestion(questionId: $questionId)
     }
 `;
 
@@ -95,6 +113,12 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
     const [removeEvent, { data: eventDeleteData, error: mutationEventDeleteError }] = useMutation(REMOVE_EVENT);
     const [modifyEvents, setModifyEvents] = useState<IEventCard[] | []>([]);
 
+    const [createQuestion, { data: createQuestionsData, error: createQuestionError }] = useMutation(CREATE_QUESTION);
+    const [removeQuestion, { data: eventQuestionData, error: mutationQuestionDeleteError }] = useMutation(
+        REMOVE_QUESTION,
+    );
+    const [modifyQuestions, setModifyQuestions] = useState<IQuestionCard[] | []>([]);
+
     const [editableMode, setEditableMode] = useState<boolean>(false);
 
     const onSave = async (
@@ -102,6 +126,8 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
         oldVariants: IVariantCard[],
         modifyEvents: IEventCard[],
         oldEvents: IEventCard[],
+        modifyQuestions: IQuestionCard[],
+        oldQuestions: IQuestionCard[],
     ) => {
         console.log(modifyVariants);
         const newVariants: IVariantCard[] = modifyVariants.filter(variant => variant.id.length < 2);
@@ -156,6 +182,38 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
         );
         refetch();
         setEditableMode(false);
+        const newQuestions: IQuestionCard[] = modifyQuestions.filter(event => event.id.length < 2);
+        await Promise.all(
+            newQuestions.map(question =>
+                createQuestion({
+                    variables: {
+                        experimentId: experimentId,
+                        event: {
+                            name: question.name,
+                            description: question.description,
+                            kind: question.kind,
+                        },
+                    },
+                }),
+            ),
+        );
+        const oldQuestionsIds: string[] = modifyQuestions
+            .filter(question => question.id.length > 2)
+            .map(question => question.id);
+        const deletedQuestions: IQuestionCard[] = oldQuestions.filter(
+            question => !oldQuestionsIds.includes(question.id),
+        );
+        await Promise.all(
+            deletedQuestions.map(question =>
+                removeQuestion({
+                    variables: {
+                        questionId: question.id,
+                    },
+                }),
+            ),
+        );
+        refetch();
+        setEditableMode(false);
     };
 
     if (!data || !data.project || !data.me || !data.project.experiment) return null;
@@ -187,6 +245,7 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
                             onClick={() => {
                                 setModifyVariants(variants);
                                 setModifyEvents(events);
+                                setModifyQuestions(questions);
                                 setEditableMode(true);
                             }}
                         >
@@ -198,8 +257,7 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
                             size="large"
                             type="primary"
                             onClick={() => {
-                                setEditableMode(false);
-                                onSave(modifyVariants, variants, modifyEvents, events);
+                                onSave(modifyVariants, variants, modifyEvents, events, modifyQuestions, questions);
                             }}
                         >
                             SAVE
@@ -230,18 +288,19 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
                     setModifyVariants={setModifyVariants}
                     variants={variants}
                 />
+
                 <EventsList
                     events={events}
                     modifyEvents={modifyEvents}
                     setModifyEvents={setModifyEvents}
                     editableMode={editableMode}
                 />
-                <CategoryBar title="questions" addButtonHook={editableMode ? onAddVariantClick : undefined} />
-                <Flex flexWrap="wrap" mx={-2}>
-                    {(questions || []).map(question => (
-                        <QuestionCard {...question} />
-                    ))}
-                </Flex>
+                <QuestionsList
+                    questions={questions}
+                    modifyQuestions={modifyQuestions}
+                    setModifyQuestions={setModifyQuestions}
+                    editableMode={editableMode}
+                />
                 <CategoryBar title="stats" />
                 <Card cardProps={{ p: 2 }} width={[1 / 2]}>
                     <ExperimentStatistics {...data.project.experiment} />
