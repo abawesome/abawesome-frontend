@@ -50,6 +50,7 @@ export interface ProjectOwnershipInput {
 
 export interface QuestionInput {
   name: string;
+  description?: string | null;
   kind?: QuestionKind | null;
 }
 

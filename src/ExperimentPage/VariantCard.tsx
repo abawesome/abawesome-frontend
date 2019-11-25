@@ -20,7 +20,6 @@ export const VARIANT_CARD_FRAGMENT = gql`
 interface Props extends IVariantCard {
     onDelete: any;
     onUpdate: (id: string, change: Partial<IVariantCard>) => void;
-    experimentId: string;
     editableMode: boolean;
 }
 

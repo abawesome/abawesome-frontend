@@ -27,6 +27,7 @@ export interface ExperimentPage_project_experiment_questions {
   __typename: "QuestionType";
   name: string;
   id: any | null;
+  description: string;
   kind: QuestionKind | null;
   results: ExperimentPage_project_experiment_questions_results[];
 }
