@@ -45,9 +45,10 @@ const AnswerChart: FunctionComponent<IAnswerChart> = ({ questions, variants }) =
     const getValuesForQuestion = (question: AnswerChart_questions) =>
         variants.map(variant => ({
             ...getKeysForQuestion(question.kind).reduce((obj, key, index) => {
-                const response = question.results.find(r => r.answer === index && r.variantId === variant.id);
+                const responses = question.results.filter(r => r.variantId === variant.id);
+                const response = responses.find(r => r.answer === index);
                 if (!response) return obj;
-                obj[key] = response.count;
+                obj[key] = ((response.count / responses.reduce((t, r) => t + r.count, 0)) * 100).toFixed(2);
                 return obj;
             }, {}),
             variant: variant.name,
@@ -71,15 +72,22 @@ const AnswerChart: FunctionComponent<IAnswerChart> = ({ questions, variants }) =
                                 colors={COLORS}
                                 axisTop={null}
                                 axisRight={null}
-                                axisBottom={null}
                                 layout="horizontal"
                                 axisLeft={{
                                     tickSize: 5,
                                     tickPadding: 5,
                                     tickRotation: -45,
-                                    legend: 'variant',
+                                    legend: 'Variant',
                                     legendPosition: 'middle',
                                     legendOffset: -60,
+                                }}
+                                axisBottom={{
+                                    tickSize: 5,
+                                    tickPadding: 5,
+                                    tickRotation: 0,
+                                    legend: 'Answers (%)',
+                                    legendPosition: 'middle',
+                                    legendOffset: 60,
                                 }}
                                 labelSkipWidth={12}
                                 labelSkipHeight={12}

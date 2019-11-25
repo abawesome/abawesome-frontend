@@ -30,31 +30,36 @@ const EventChart: FunctionComponent<IEventChart> = ({ events, variants }) => {
     const displayedCountResults = (
         events.find(e => e.name === 'AUTO__VariantDisplayed') || { results: [] as EventChart_events_results[] }
     ).results;
-    const getValues = () =>
-        variants.map(variant => ({
+    const getValues = () => {
+        let maxValue = 0;
+        const values = variants.map(variant => ({
             ...events
                 .filter(e => !e.name.startsWith('AUTO'))
                 .reduce((obj, event, index) => {
                     const response = event.results.find(r => r.variantId === variant.id);
                     const variantDisplayed = displayedCountResults.find(r => r.variantId === variant.id);
                     if (!response || !variantDisplayed) return obj;
+                    maxValue = Math.max(maxValue, (response.count / variantDisplayed.count) * 100);
                     obj[event.name] = ((response.count / variantDisplayed.count) * 100).toFixed(2);
                     return obj;
                 }, {}),
             variant: variant.name,
         }));
-
+        return { maxValue, values };
+    };
+    const { maxValue, values } = getValues();
     return (
         <>
             <div style={{ width: '100%', height: 100 + variants.length * 100 }}>
                 <ResponsiveBar
-                    data={getValues()}
+                    data={values}
                     keys={events.map(event => event.name)}
                     indexBy="variant"
                     groupMode="grouped"
                     margin={{ top: 50, right: 200, bottom: 100, left: 70 }}
                     padding={0.2}
                     innerPadding={1}
+                    maxValue={maxValue}
                     colors={COLORS}
                     axisTop={null}
                     axisRight={null}
