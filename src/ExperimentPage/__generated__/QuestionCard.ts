@@ -12,5 +12,6 @@ export interface QuestionCard {
   __typename: "QuestionType";
   id: any | null;
   name: string;
+  description: string;
   kind: QuestionKind | null;
 }
