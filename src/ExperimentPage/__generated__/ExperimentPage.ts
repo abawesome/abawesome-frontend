@@ -12,7 +12,7 @@ export interface ExperimentPage_project_experiment_variants {
   __typename: "VariantType";
   name: string;
   id: any | null;
-  description: string;
+  description: string | null;
 }
 
 export interface ExperimentPage_project_experiment_questions_results {
@@ -27,7 +27,7 @@ export interface ExperimentPage_project_experiment_questions {
   __typename: "QuestionType";
   name: string;
   id: any | null;
-  description: string;
+  description: string | null;
   kind: QuestionKind | null;
   results: ExperimentPage_project_experiment_questions_results[];
 }
@@ -42,7 +42,7 @@ export interface ExperimentPage_project_experiment_events_results {
 export interface ExperimentPage_project_experiment_events {
   __typename: "EventType";
   name: string;
-  description: string;
+  description: string | null;
   id: any | null;
   results: ExperimentPage_project_experiment_events_results[];
 }
@@ -51,6 +51,7 @@ export interface ExperimentPage_project_experiment {
   __typename: "ExperimentType";
   id: any | null;
   name: string;
+  description: string | null;
   variants: ExperimentPage_project_experiment_variants[];
   questions: ExperimentPage_project_experiment_questions[];
   events: ExperimentPage_project_experiment_events[];

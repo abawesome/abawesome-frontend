@@ -23,6 +23,12 @@ export enum ShareStatus {
   READ_WRITE = "READ_WRITE",
 }
 
+export interface EventEditInput {
+  id?: string | null;
+  name: string;
+  description?: string | null;
+}
+
 export interface EventInput {
   name: string;
   description?: string | null;
@@ -48,10 +54,23 @@ export interface ProjectOwnershipInput {
   ownership?: OwnershipType | null;
 }
 
+export interface QuestionEditInput {
+  id?: string | null;
+  name: string;
+  kind?: QuestionKind | null;
+}
+
 export interface QuestionInput {
   name: string;
   description?: string | null;
   kind?: QuestionKind | null;
+}
+
+export interface VariantEditInput {
+  id?: string | null;
+  name: string;
+  description?: string | null;
+  photoUrl?: string | null;
 }
 
 export interface VariantInput {

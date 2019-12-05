@@ -10,5 +10,5 @@ export interface ExperimentCard {
   __typename: "ExperimentType";
   id: any | null;
   name: string;
-  description: string;
+  description: string | null;
 }

@@ -53,7 +53,7 @@ const VariantCard: FunctionComponent<Props> = ({ id, name, description, onDelete
                 <TextArea
                     rows={2}
                     placeholder="Variant Description"
-                    value={description}
+                    value={description || ''}
                     onChange={event => onUpdate(id, { description: event.target.value })}
                 />
             )}

@@ -40,7 +40,7 @@ const EventCard: FunctionComponent<Props> = ({ id, name, description, onDelete, 
             {editableMode && (
                 <Input
                     size="large"
-                    placeholder="Variant Name"
+                    placeholder="Event Name"
                     value={name}
                     onChange={event => onUpdate(id, { name: event.target.value })}
                 />
@@ -50,7 +50,7 @@ const EventCard: FunctionComponent<Props> = ({ id, name, description, onDelete, 
                 <TextArea
                     rows={2}
                     placeholder="Event Description"
-                    value={description}
+                    value={description || ''}
                     onChange={event => onUpdate(id, { description: event.target.value })}
                 />
             )}

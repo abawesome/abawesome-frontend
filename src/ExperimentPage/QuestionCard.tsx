@@ -70,8 +70,8 @@ const QuestionCard: FunctionComponent<Props> = ({ id, name, description, kind, e
             {editableMode && (
                 <TextArea
                     rows={2}
-                    placeholder="Variant Description"
-                    value={description}
+                    placeholder="Question Description"
+                    value={description || ''}
                     onChange={event => onUpdate(id, { description: event.target.value })}
                 />
             )}
