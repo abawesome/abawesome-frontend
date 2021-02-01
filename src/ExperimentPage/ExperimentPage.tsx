@@ -6,15 +6,15 @@ import Card from '../components/Card';
 import gql from 'graphql-tag';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { ExperimentPage as IExperimentPage, ExperimentPageVariables } from './__generated__/ExperimentPage';
-import { VariantCard as IVariantCard } from './__generated__/VariantCard';
+import { VariantCard, VariantCard as IVariantCard } from './__generated__/VariantCard';
 import ExperimentStatistics, { EXPERIMENT_STATISTICS_FRAGMENT } from './ExperimentStatistics';
 import { projectsLink } from '../components/utils';
 import NavBar, { NAVBAR_FRAGMENT } from '../components/NavBar';
 import { Button } from 'antd';
 import EventChart, { EVENT_CHART_FRAGMENT } from '../components/EventChart';
 import AnswerChart, { ANSWER_CHART_FRAGMENT } from '../components/AnswerChart';
-import { EventCard as IEventCard } from './__generated__/EventCard';
-import { QuestionCard as IQuestionCard } from './__generated__/QuestionCard';
+import { EventCard, EventCard as IEventCard } from './__generated__/EventCard';
+import { QuestionCard, QuestionCard as IQuestionCard } from './__generated__/QuestionCard';
 import VariantsList from './VariantList';
 import EventsList from './EventList';
 import QuestionsList from './QuestionList';
@@ -25,6 +25,7 @@ const EXPERIMENT_PAGE = gql`
             experiment(experimentId: $experimentId) {
                 id
                 name
+                description
                 variants {
                     name
                     id
@@ -60,8 +61,15 @@ const EXPERIMENT_PAGE = gql`
 
 const CREATE_VARIANT = gql`
     mutation createVariantMutation($variant: VariantInput!, $experimentId: String!) {
-        createVariant(variant: $variant, experimentId: $experimentId)
-        {
+        createVariant(variant: $variant, experimentId: $experimentId) {
+            id
+        }
+    }
+`;
+
+const EDIT_VARIANT = gql`
+    mutation updateVariantMutation($variant: VariantEditInput!) {
+        updateVariant(variant: $variant) {
             id
         }
     }
@@ -75,7 +83,15 @@ const REMOVE_VARIANT = gql`
 
 const CREATE_EVENT = gql`
     mutation createEventMutation($event: EventInput!, $experimentId: String!) {
-        createEvent(event: $event, experimentId: $experimentId){
+        createEvent(event: $event, experimentId: $experimentId) {
+            id
+        }
+    }
+`;
+
+const EDIT_EVENT = gql`
+    mutation updateEventMutation($event: EventEditInput!) {
+        updateEvent(event: $event) {
             id
         }
     }
@@ -89,7 +105,15 @@ const REMOVE_EVENT = gql`
 
 const CREATE_QUESTION = gql`
     mutation createQuestionMutation($question: QuestionInput!, $experimentId: String!) {
-        createQuestion(question: $question, experimentId: $experimentId){
+        createQuestion(question: $question, experimentId: $experimentId) {
+            id
+        }
+    }
+`;
+
+const UPDATE_QUESTION = gql`
+    mutation updateQuestionMutation($question: QuestionEditInput!) {
+        updateQuestion(question: $question) {
             id
         }
     }
@@ -105,15 +129,18 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
     const { loading, data, refetch, error } = useQuery<IExperimentPage, ExperimentPageVariables>(EXPERIMENT_PAGE, {
         variables: { projectId, experimentId },
     });
-    const [createVariant, { data: mutationData, error: mutationError }] = useMutation(CREATE_VARIANT);
-    const [removeVariant, { data: mutationDeleteData, error: mutationDeleteError }] = useMutation(REMOVE_VARIANT);
+    const [createVariant, { data: createVariantData, error: createVariantError }] = useMutation(CREATE_VARIANT);
+    const [updateVariant, { data: editVariantData, error: editVariantError }] = useMutation(EDIT_VARIANT);
+    const [removeVariant, { data: deleteVariantData, error: deleteVariantError }] = useMutation(REMOVE_VARIANT);
     const [modifyVariants, setModifyVariants] = useState<IVariantCard[] | []>([]);
 
     const [createEvent, { data: createEventData, error: createEventError }] = useMutation(CREATE_EVENT);
+    const [updateEvent, { data: updateEventData, error: updateEventError }] = useMutation(EDIT_EVENT);
     const [removeEvent, { data: eventDeleteData, error: mutationEventDeleteError }] = useMutation(REMOVE_EVENT);
     const [modifyEvents, setModifyEvents] = useState<IEventCard[] | []>([]);
 
     const [createQuestion, { data: createQuestionsData, error: createQuestionError }] = useMutation(CREATE_QUESTION);
+    const [updateQuestion, { data: updateQuestionsData, error: updateQuestionError }] = useMutation(UPDATE_QUESTION);
     const [removeQuestion, { data: eventQuestionData, error: mutationQuestionDeleteError }] = useMutation(
         REMOVE_QUESTION,
     );
@@ -129,7 +156,6 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
         modifyQuestions: IQuestionCard[],
         oldQuestions: IQuestionCard[],
     ) => {
-        console.log(modifyVariants);
         const newVariants: IVariantCard[] = modifyVariants.filter(variant => variant.id.length < 2);
         await Promise.all(
             newVariants.map(variant =>
@@ -145,6 +171,23 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
             ),
         );
         const oldVariantIds: string[] = modifyVariants.filter(variant => variant.id.length > 2).map(value => value.id);
+        const updatedVariants: VariantCard[] = modifyVariants.filter(
+            variant => oldVariantIds.includes(variant.id) && !oldVariants.includes(variant),
+        );
+        await Promise.all(
+            updatedVariants.map(variant =>
+                updateVariant({
+                    variables: {
+                        variant: {
+                            id: variant.id,
+                            name: variant.name,
+                            description: variant.description,
+                        },
+                    },
+                }),
+            ),
+        );
+
         const deletedVariants: IVariantCard[] = oldVariants.filter(variant => !oldVariantIds.includes(variant.id));
         await Promise.all(
             deletedVariants.map(variant =>
@@ -170,6 +213,23 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
             ),
         );
         const oldEventsIds: string[] = modifyEvents.filter(event => event.id.length > 2).map(event => event.id);
+        const updatedEvents: EventCard[] = modifyEvents.filter(
+            event => oldEventsIds.includes(event.id) && !oldEvents.includes(event),
+        );
+        await Promise.all(
+            updatedEvents.map(event =>
+                updateEvent({
+                    variables: {
+                        event: {
+                            id: event.id,
+                            name: event.name,
+                            description: event.description,
+                        },
+                    },
+                }),
+            ),
+        );
+
         const deletedEvents: IEventCard[] = oldEvents.filter(event => !oldEventsIds.includes(event.id));
         await Promise.all(
             deletedEvents.map(event =>
@@ -180,15 +240,13 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
                 }),
             ),
         );
-        refetch();
-        setEditableMode(false);
         const newQuestions: IQuestionCard[] = modifyQuestions.filter(event => event.id.length < 2);
         await Promise.all(
             newQuestions.map(question =>
                 createQuestion({
                     variables: {
                         experimentId: experimentId,
-                        event: {
+                        question: {
                             name: question.name,
                             description: question.description,
                             kind: question.kind,
@@ -200,6 +258,22 @@ const ExperimentPage: FunctionComponent<ExperimentPageVariables> = ({ projectId,
         const oldQuestionsIds: string[] = modifyQuestions
             .filter(question => question.id.length > 2)
             .map(question => question.id);
+        const updatedQuestions: QuestionCard[] = modifyQuestions.filter(
+            question => oldQuestionsIds.includes(question.id) && !oldQuestions.includes(question),
+        );
+        await Promise.all(
+            updatedQuestions.map(question =>
+                updateQuestion({
+                    variables: {
+                        question: {
+                            id: question.id,
+                            name: question.name,
+                            description: question.description,
+                        },
+                    },
+                }),
+            ),
+        );
         const deletedQuestions: IQuestionCard[] = oldQuestions.filter(
             question => !oldQuestionsIds.includes(question.id),
         );
